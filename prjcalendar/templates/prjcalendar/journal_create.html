@@ -1,0 +1,40 @@
+{% extends 'recipe/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+
+      <form class="row g-3 needs-validation" action="/journal/create/0/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+          <h4 class="h4 col-md-5 ur_edit">Новая запись</h4>
+          <input type="text" class="form-control" name="path_url" id="path_url" value="{{path_url}}" hidden />
+          <div class="col-md-3">
+            <button class="btn btn-secondary ur_edit" type="submit">Сохранить</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Рецепт</label>
+            <input type="text" class="form-control" name="name" id="name" value="{{recipe.name}}" required />
+          </div>
+          <div class="col-md-6">
+            <label for="cat" class="form-label">Категория</label>
+            <select id="cat" class="form-control" name="cat" required>
+              <option  value="{{cat.category_name}}">{{cat.category_name}}</option>        
+                {% for org in category %}
+                <option value="{{org.category_name}}"
+                    {% if org == current_org %} selected="selected" {% endif %}>
+                    {{org.category_name|capfirst}}
+                </option>
+                {% endfor %}        
+            </select>
+          </div>          
+        </div>
+      </form>
+
+
+{% endblock %}

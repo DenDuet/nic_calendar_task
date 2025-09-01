@@ -1,0 +1,55 @@
+{% extends 'project/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <!-- <p class="col-12 col-md-6"> -->
+  <div class="row">
+    <h4 class="h4 col-md-5">{{ title }}</h4>
+    {% comment %} <a class="btn btn-primary btn-md col-md-3" href="{% url 'add address to base' %}" role="button">Добавить запись</a> {% endcomment %}
+    <a class="btn btn-primary col-md-3" data-bs-toggle="collapse" data-bs-target="#new_addr" role="button">Добавить новый элемент</a>
+  </div>
+  <div id="new_addr" class="collapse">
+    {% comment %} <form action="" method="post"> {% endcomment %}
+    <form action="/read_staffrole/create/0/" method="post">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6">
+          <label for="name_staffrole" class="form-label">Название элемента справочника:</label>
+          <input type="text" class="form-control" maxlength="50" name="name_staffrole" id="name_staffrole" />
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary ur_edit" type="submit" id="exit">Сохранить изменения</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <table id="table" class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Наименование</th>
+        {% comment %} <th>Удалить?</th> {% endcomment %}
+      </tr>
+    </thead>
+    <tbody class="tbody_full_height">
+      {% for ones in own_car %}
+        <tr>
+          <td>{{ ones.name_staffrole }}</td>
+          {% comment %} <td class="clickable" onclick="window.location='/read_staffrole/delete/{{ones.id}}'">Delete</td> {% endcomment %}
+          {% comment %} <td>Delete</td> {% endcomment %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+{% load static %} 
+    let table = new DataTable('#table',{
+          language: {
+              url: "{% static 'css/ru.css' %}"
+          },        
+    })
+  </script>
+{% endblock %}

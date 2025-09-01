@@ -1,0 +1,235 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/resources/demos/style.css">   {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {% endcomment %}
+
+{% comment %} <meta name="viewport" content="width=device-width, initial-scale=1">   {% endcomment %}
+{% endblock %}
+
+{% block content %}
+
+  <title>jQuery UI Draggable + Sortable</title>
+
+
+<div class="row">
+<div class="col-md-2 left">
+	<ul>
+	{% for prj in project %}
+	<li id="{{prj.id}}" class="draggable ui{{prj.id}}">{{prj.name_prj}}</li>
+	{% endfor %}
+	</ul>
+
+
+
+{% comment %} <div class="col-md-2 left"> {% endcomment %}
+	<ul id="trash" class="droppable trash" width="70px" height="70px">
+		<p>Корзина</p>
+	</ul>
+
+{% comment %} <ul id="trash" class="droppable ui-state-highlight" > {% endcomment %}
+  {% comment %} <li id="1" >Проект 1</li> {% endcomment %}
+{% comment %} </ul> {% endcomment %}
+ {% comment %} </div> {% endcomment %}
+ </div>
+
+<div class="col-md-10 right">
+{% comment %} <div class="row" display="flex"> {% endcomment %}
+<table>
+	<thead>
+		<tr>
+			<th id="staff1" class="staff1">
+					{% comment %} <div  > {% endcomment %}
+						Сотрудник
+					{% comment %} </div>	 {% endcomment %}
+			</th>
+				{% for day in days %}
+			<th class="calendar" >
+				{% comment %} <div > {% endcomment %}
+					<p>{{day}} мая</p>
+					{% comment %} <ul id="field"+day  class="sortable_too day">
+					</ul> {% endcomment %}
+				{% comment %} </div>	 {% endcomment %}
+			</th>
+				{% endfor%}		
+		</tr>
+{% comment %} </div>	 {% endcomment %}
+	</thead>
+	<tbody>
+	{% for st in staff %}
+	<tr>
+		<td  id="staff1" class="staff1" >
+			{% comment %} <div> {% endcomment %}
+				{{ st }}
+			{% comment %} </div>	 {% endcomment %}
+		</td>
+	{% comment %} </div> {% endcomment %}
+		{% for day in days %}
+		<td class="calendar parent droppable" >
+			{% comment %} <div > {% endcomment %}
+				<ul id="field_{{st.id}}_{{day}}" class="sortable_too day">
+				{{st.id}}_{{day}}
+				</ul>
+			{% comment %} </div> {% endcomment %}
+		</td>
+		{% endfor%}		
+	</tr>
+	{% endfor%}		
+	</tbody>
+</table>
+</div>	
+
+
+
+{% comment %} 
+<form class="form form-inline" action="" method="post" target="_blank">
+	<div class="form-row">
+		<div class="col">
+			<div class="input-group input-group-sm">
+				<input type="text" class="form-control form-control-sm" id="x" placeholder="x">
+				<div class="input-group-append">
+					<span class="input-group-text">px</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col">
+			<div class="input-group input-group-sm">
+				<input type="text" class="form-control form-control-sm" id="y" placeholder="y">
+				<div class="input-group-append">
+					<span class="input-group-text">px</span>
+				</div>
+			</div>
+		</div>
+
+	</div>	
+</form>	 {% endcomment %}
+
+
+{% comment %} <div class="scheduler"></div> {% endcomment %}
+
+{% comment %} 
+  <div style="height:64px">
+    <img src="https://js.cx/browsers/chrome.svg" class="draggable">
+    <img src="https://js.cx/browsers/firefox.svg" class="draggable">
+    <img src="https://js.cx/browsers/ie.svg" class="draggable">
+    <img src="https://js.cx/browsers/opera.svg" class="draggable">
+    <img src="https://js.cx/browsers/safari.svg" class="draggable">
+  </div>
+
+  <p>Браузер переносить сюда:</p>
+
+  <div class="computer droppable">
+  </div> {% endcomment %}
+
+
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link href="/resources/demos/style.css">
+  <style>
+    li { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+    li { margin: 5px; padding: 5px; }
+  </style>
+
+
+
+  <script>
+    DragManager.onDragCancel = function(dragObject) {
+      dragObject.avatar.rollback();
+    };
+
+    DragManager.onDragEnd = function(dragObject, dropElem) {
+      {% comment %} dragObject.elem.style.display = 'none'; {% endcomment %}
+      {% comment %} var dropped = dropElem.clone(); {% endcomment %}
+      console.log('dragObject = ' + dragObject);
+      console.log('dropElem = ' + dropElem);
+      console.log('new dropped = ' + dragObject.elem.id);
+      console.log(' dropElem = ' + dropElem.elem.id)
+      dropElem.classList.add('computer-smile');
+      {% comment %} setTimeout(function() {
+        dropElem.classList.remove('computer-smile');
+      }, 200); {% endcomment %}
+    };
+  </script>
+
+
+  <script>
+  $( function() {
+
+    $( ".sortable_too" ).sortable({
+		connectWith: '.day',
+      	revert: true,
+    });
+
+    {% comment %} $( ".draggable" ).draggable({
+      	connectToSortable: ".sortable_too",
+		helper: "clone",
+		revert: "invalid",
+    }); {% endcomment %}
+
+    {% comment %} $( "ul, li" ).disableSelection(); {% endcomment %}
+
+    {% comment %} $( "#trash" ).droppable({
+		accept: ".trashable",
+		drop: function(e, ui) {
+ 			
+			var dropped = ui.draggable;
+			var droppedOn = $(this);
+			var itemInOtherList = $(this).children("#" + dropped.attr('id'));
+			itemInOtherList.removeClass('ui-state-highlight').draggable({ disabled: false });
+			
+			dropped.remove();
+
+		}
+    }); {% endcomment %}
+
+
+    {% comment %} $( ".day" ).droppable({
+		accept: ".draggable",
+		revert: "invalid",
+		tolerance: "pointer",
+		drop: function( e, ui ) {
+			var dropped = ui.draggable;
+         
+    		console.log(ui.draggable);
+    		console.log(dropped.attr('id'));
+    		console.log(e.target.id, e.target.id.split("_")[0]);
+			dropped.addClass("trashable");
+			dropped.resizable({
+				grid: [70, 16],
+				handles: 'e'
+				});
+
+		}
+    		});	 {% endcomment %}
+
+
+
+
+
+{% comment %} document.addEventListener('mousedown', function(event) {
+    let coordDisplay = event.target.id;
+    console.log(coordDisplay, coordDisplay.split('_'));
+	console.log(`Координаты клика: X = ${event.clientX}, Y = ${event.clientY}`);
+
+	x = event.clientX;
+	y = event.clientY;
+    console.log(parseInt(x/70));
+
+}); {% endcomment %}
+
+
+});
+
+
+
+  </script>
+
+
+
+
+
+{% endblock %}

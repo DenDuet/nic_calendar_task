@@ -1,0 +1,37 @@
+{% extends 'users/start.html' %}
+{% comment %} {% extends 'project/base.html' %} {% endcomment %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="content-section">
+    {% comment %} <form method="POST">
+      {% csrf_token %}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Вход</legend>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Войти</button>
+      </div>
+    </form> {% endcomment %}
+    <section class="loginform cf">
+    <h1 style="color:blue"> User Login </h1>
+      <form name="login" method="post" accept-charset="utf-8" action="{% url 'login' %}">
+      {% csrf_token %}
+      <label for="usermail" align="center">User-Id </label>
+      <input type="alphanumeric" name="userid" >
+      <br \>
+
+      <label for="password" align="center">Password </label>
+      <input type="alphanumeric" name="password" >
+      <br \>
+
+      <input type="submit" value="Login" style="color:blue">
+      <input type="hidden" name="next" value="{{ next }}"/>
+      </center>
+      </form>
+    </section>    
+    <div class="border-top pt-3">
+      <small class="text-muted">Нужен аккаунт? <a class="ml-2" href="{% url 'register' %}">Регистрация</a></small>
+    </div>
+  </div>
+{% endblock %}

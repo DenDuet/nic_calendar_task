@@ -1,0 +1,237 @@
+{% extends 'project/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  {% csrf_token %}
+      <div class="col-md-12">
+        <div class="row">
+        <div class="col-md-4">
+          <h4 class="staff_tbl ">{{stage.stage_doc}}</h4>
+
+          <h6 id="people_" class="h6">Отпуск: <input class="small_size" id="people" name="people" value="{{ people }}" disabled/> человеко-дней</h6>
+          <a class="btn btn-primary col-md-6" href="/staff/show_vacations/" role="button">График отпусков</a>
+        </div>
+        <div class = "col-md-6 bordered1"> 
+          <form class="row " action="/staff/vacations/" method="post">
+          {% csrf_token %}
+
+            <div class="col-md-4">
+              <label for="date_start" class="form-label">Дата начала:</label>
+              <input type="date" class="form-control" id='date_start' name="date_start" value="{{date_start|date:'Y-m-d'}}" />
+            </div>
+            <div class="col-md-4">
+              <label for="date_finish" class="form-label">Дата окончания:</label>
+              <input type="date" class="form-control" id='date_finish' name="date_finish" value="{{date_finish|date:'Y-m-d'}}" />
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-primary ur_edit" type="submit" id="exit">Изменить даты</button>
+            </div>                    
+          </form>
+        </div> 
+
+        </div>
+
+      <div class="fixTableHead"> 
+        <table id="StaffTable" class="table table-bordered table-hover tbl">
+          <thead class="staff">
+            <tr>
+              {% for st in staff %}
+                  <th>{{ st }}</th>
+              {% endfor %}
+            </tr>
+            <tr>
+              {% for st in staff %}
+                  <td></td>
+              {% endfor %}
+            </tr>            
+          </thead>
+          <tbody>
+            {% for data in dates %}
+              <tr>
+                {% for dt in data %}
+                  {% if forloop.counter0  == 0 %} 
+
+                      <td>{{ dt|date:"d.m.Y" }}</td>  
+                  {% else %}              
+                    {% if dt == "" %}
+                      <td></td>
+                    {% else %}
+                      <td>{{ dt }}</td>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      </div>
+  </div>
+
+{% load static %} 
+
+    <script src="{% static 'js/moment.js' %}"></script> 
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script> {% endcomment %}
+    <script src="{% static 'js/ru.js' %}"></script> 
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/locale/ru.js"></script> {% endcomment %}
+
+
+  <script>
+
+  function getCellRow(td){
+    td= td? td.target:window.event? event.srcElement:'';
+    var rc= [], pa= td.parentNode;
+    if(pa.tagName== 'TR'){
+      let row = pa.rowIndex;
+      let cell = td.cellIndex;
+      if (row>0 & cell>0) {
+        const table = document.querySelector('#StaffTable');
+        const rows = table.querySelectorAll('tr');
+
+        const zeroRow = rows[0];
+        const firstRow = rows[row];
+
+        const fio = zeroRow.cells[cell].innerHTML;
+        const date1 = firstRow.cells[0].innerHTML;
+        moment.locale('ru');
+        const date = moment.utc(date1, 'DD.MM.YYYY').format('YYYY-MM-DD');        
+        if (td.classList.contains('selfNotEmpty')) {
+          td.classList.replace('selfNotEmpty','empty');
+          colDate = new Date(date);
+          day1 = colDate.getDay();
+          if (day1==0 || day1==6) {
+            td.classList.replace('empty','tableRowHolidays');
+          }
+          ajaxChange(fio,date, row, cell);
+          rows[1].cells[cell].innerHTML = Number(rows[1].cells[cell].innerHTML) - 1;
+          {% comment %} console.log('-1-', fio, date, row, cell, rows[1].cells[cell].innerHTML); {% endcomment %}
+        }
+        else if (td.classList.contains('tableRowHolidays')) {
+          if (td.classList.contains('tableRowHolidays')) {
+            td.classList.replace('tableRowHolidays','selfNotEmpty');
+          }
+          ajaxChange(fio,date, row, cell);
+          rows[1].cells[cell].innerHTML = Number(rows[1].cells[cell].innerHTML) + 1;
+          {% comment %} console.log('-2-', fio, date, row, cell, rows[1].cells[cell].innerHTML); {% endcomment %}
+
+        }
+        else if (td.classList.contains('empty')) {
+          td.classList.replace('empty','selfNotEmpty');
+          ajaxChange(fio,date, row, cell); 
+          rows[1].cells[cell].innerHTML = Number(rows[1].cells[cell].innerHTML) + 1;
+          {% comment %} console.log('-3-', fio, date, row, cell, rows[1].cells[cell].innerHTML); {% endcomment %}
+
+        }
+      }
+  }
+  }
+
+function replaceCellContent(rowNumber, cellNumber, content) {
+    const table = document.querySelector('#StaffTable');
+    const rows = table.querySelectorAll('tr');  
+
+      rows[rowNumber+1].cells[cellNumber-1].innerHTML = content;
+} 
+
+{% comment %} window.onload =  function colorizeCell(content) { {% endcomment %}
+document.addEventListener("DOMContentLoaded", () => {
+  var content = 'Отпуск';
+  var table = document.getElementById("StaffTable");
+  var row = table.querySelectorAll('tr');
+  var col = row[0].cells.length;
+  var day1 = 0;
+
+  for (var i = 0, row; row = table.rows[i]; i++) {
+
+   //iterate through rows
+   //rows would be accessed using the "row" variable assigned in the for loop
+   for (var j = 0, col; col = row.cells[j]; j++) {
+    
+      if (i==0) {
+        col.classList.add('tableTitle');
+      }
+      else if (i == 1) {
+        col.classList.add('tableTitle');
+        col.innerHTML = 0;
+      }      
+      else {
+        if (j==0 && row.cells.length==table.rows[0].cells.length) {
+          moment.locale('ru');
+          colDate_ = moment.utc(col.innerHTML, 'DD.MM.YYYY').format('YYYY-MM-DD');
+          colDate = new Date(colDate_);
+          day1 = colDate.getDay();
+          if (day1==0 || day1==6) {
+            col.classList.add('tableRowHolidays');
+          }
+          else {col.classList.add('tableRowTitle');
+          }
+        } else {
+            if (col.innerHTML==content ) {
+              col.classList.add('selfNotEmpty');
+              table.rows[1].cells[j].innerHTML = Number(table.rows[1].cells[j].innerHTML) + 1;
+              {% comment %} console.log(Number(table.rows[1].cells[j].innerHTML)); {% endcomment %}
+              
+            }
+            else if (col.innerHTML == '') {
+                if (day1==0 || day1==6) { 
+                  col.classList.add('tableRowHolidays');
+                }
+                 else {
+                  col.classList.add('empty');
+                }
+              }
+            else col.classList.add('notEmpty');
+        }
+        
+      }
+
+   }  
+}
+
+}); 
+
+
+  function ajaxChange(fio,date, row, cell) {
+    let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+    console.log("people = ", document.getElementById('people'))
+
+    $.ajax({
+      data: {'fio': fio,
+              'date': date,
+              'people': document.getElementById('people').value,
+    },
+      type: "POST", // GET или POST
+      url: "/staff/vacations/",
+      headers:{
+       "X-CSRFToken": csrftoken
+      },
+      dataType: 'json',
+                  // если успешно, то
+      success: function (response) {
+                  json_parse = JSON.parse(response);
+                  replaceCellContent(row-1, cell+1, json_parse['dates']);
+                  document.getElementById('people').value = json_parse['people'];
+                  },
+                  // если ошибка, то
+                  error: function (response) {
+                  // предупредим об ошибке
+                  }
+                  });
+                  return false;
+  }
+
+
+window.onload= function(){
+    document.getElementsByTagName('table')[0].onclick=getCellRow;
+}
+
+ </script>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'recipe/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div  class="col-md-3 bordered1">
+  {% comment %} <div  class="col-md-3 bordered1"> {% endcomment %}
+    <h5>Сегодня: {{date|date:"l d.m.Y"}}</h5>
+    <h6>Рецептов в базе: {{ count }}</h6>
+    <li><hr class="dropdown-divider"></li>
+    <h5>Категории</h5>
+    <ul>
+      {% for cat in cats %}
+        <li>
+          <a type="button" class="list-group-item" href="/main_recipe/{{cat.id}}/">{{ cat.category_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+<div class="col-md-9 bordered1">
+  <h4 class="h4 col-md-5">{{ cat }}</h4>
+
+<table id="rcpTable" class="table table-bordered table-hover">
+  <thead>
+    <tr>
+
+      <th>Наименование</th>
+      <th>Описание товара</th>
+      <th>Дата создания</th>
+      <th>Автор</th>
+      <th>Картинка</th>
+    </tr>
+  </thead>
+    {% for ones in recipe %}
+        {% if user.is_authenticated %}
+         <tr class="clickable" onclick="window.location='/recipe/edit/{{ ones.recipe_name.id }}/'">
+        {% else %}
+        <tr>
+        {% endif %}
+        <td>{{ ones.recipe_name.name }}</td>
+        <td>{{ ones.recipe_name.description }}</td>
+        <td>{{ ones.recipe_name.add_date }}</td>
+        <td>{{ ones.recipe_name.author.first_name }}</td>
+
+        <td>
+          <p class="col-12 col-md-6">
+            <img src="{{ ones.recipe_name.image }}" width="100px" alt="{{ ones.recipe_name.image }}" />
+          </p>
+        </td>
+    {% endfor %}
+      </table>
+    </div>
+</div>
+
+
+  <script>
+    let table = new DataTable('#rcpTable', {
+      paging: false,
+      scrollCollapse: true,
+      scrollY: '60vh'
+    })
+  </script>
+
+{% endblock %}

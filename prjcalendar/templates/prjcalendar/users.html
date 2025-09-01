@@ -1,0 +1,25 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <h4 class="h4 col-md-5">{{ title }}</h4>
+      {% if user.is_authenticated %}
+        {% comment %} <a class="btn btn-secondary btn-md col-md-3 ur_edit" href="/read_users/create/" role="button">Добавить пользователя</a> {% endcomment %}
+      К бобрам пожаловать {{user.username}}!
+
+     {% endif %}
+  </div>
+
+
+  {% comment %} <script>
+    let table = new DataTable('#catTable', {
+      paging: false,
+      scrollCollapse: true,
+      scrollY: '70vh'
+    })
+  </script> {% endcomment %}
+{% endblock %}

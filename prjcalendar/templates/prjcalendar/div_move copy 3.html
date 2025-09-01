@@ -1,0 +1,92 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/resources/demos/style.css">   {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {% endcomment %}
+
+{% comment %} <meta name="viewport" content="width=device-width, initial-scale=1">   {% endcomment %}
+{% endblock %}
+
+{% block content %}
+
+{% comment %} ____________________________________________________________________ {% endcomment %}
+    {% load static %}
+    {% comment %} <link href="{% static 'css/main.css' %}" rel="stylesheet">  {% endcomment %}
+
+<script src="{% static 'js/DragObject.js' %}"></script>
+<script src="{% static 'js/DropTarget.js' %}"></script>
+<script src="{% static 'js/dragMaster.js' %}"></script>
+<script src="{% static 'js/helpers.js' %}"></script>
+{% comment %} <script src="./DropTarget.js"></script>
+<script src="./dragMaster.js"></script>
+<script src="./helpers.js"></script> {% endcomment %}
+<style>
+.uponMe { background-color: red; }
+div { background-color: white; }
+</style>
+<script type="text/javascript" src="chrome-extension://epebfcehmdedogndhlcacafjaacknbcm/nmcades_plugin_api.js"></script><script type="text/javascript" src="chrome-extension://epebfcehmdedogndhlcacafjaacknbcm/nmcades_plugin_api.js"></script></head>
+<body>
+
+<div class="row">
+	<div id="dragObjects">
+		<div class="card1"><img src="{% static 'images/piki.gif' %}"></div>
+		<div class="card1"><img src="{% static 'images/bubi.gif' %}"></div>
+		<div class="card1"><img src="{% static 'images/trefi.gif' %}"></div>
+		<div class="card1"><img src="{% static 'images/chervi.gif' %}"></div>
+
+	</div>
+	<div class="cards">
+		<div class="car" style="border: 2px black solid; padding:50px; height: 100px; width: 100px" id="nested1">
+
+		</div>
+		<div class="car" style="border: 2px black solid; padding:50px; height: 100px; width: 100px" id="nested2">
+
+		</div>
+		<div class="car" style="border: 2px black solid; padding:50px; height: 100px; width: 100px" id="nested3">
+
+		</div>
+		<div class="car" style="border: 2px black solid; padding:50px; height: 100px; width: 100px" id="nested4">
+
+		</div>			
+		<div class="car" style="border: 1px blue solid; height: 100px; width: 100px; text-align:center;line-height:100px" id="nested5">
+			DROP
+		</div>
+	</div>
+</div>
+
+
+<script>
+onload = function() {
+    var dragObjects = document.getElementById('dragObjects').getElementsByTagName('img')
+    for(var i=0; i<dragObjects.length; i++) {
+        new DragObject(dragObjects[i])
+    }
+
+    var dropObjects = document.getElementsByClassName('car')
+   
+    for(var i=0; i<document.getElementsByClassName('car').length; i++) {
+        new DropTarget(dropObjects[i])
+    }	
+
+    
+}
+
+$()
+</script>
+
+    
+<script defer="" src="{% static 'js/vcd15cbe7772f49c399c6a5babf22c1241717689176015' %}" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;93d2f92f6e33abde&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.4.0-1-g37f21b1&quot;,&quot;token&quot;:&quot;9f3ad1cf53354ef3a8f18d624192683f&quot;}" crossorigin="anonymous"></script>
+
+
+
+
+
+{% comment %} _________________________________________________ {% endcomment %}
+</script>
+
+
+{% endblock %}

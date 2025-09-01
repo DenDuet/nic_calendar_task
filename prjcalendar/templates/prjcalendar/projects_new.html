@@ -1,0 +1,97 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <form class="row g-3 needs-validation" action="/projects/create/" method="post">
+    {% csrf_token %}
+
+    <div class="row">
+      <h4 class="h4 col-md-6">Создать проект</h4>
+      <div class="col-md-6">
+        <button class="btn btn-btn" type="submit">Сохранить изменения</button>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <label for="customer_id" class="form-label">Наименование заказчика:</label>
+      <input type="button" class="form-control input_button" id="customer_id" data-bs-toggle="collapse" data-bs-target="#customer" placeholder="Наименование заказчика" required/>
+      <input type="text" class="form-control input_button" name="customerID" id="customerID" hidden/>
+        <div id="customer" class="collapse" >
+          <table id="customerIDTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>Наименование</th>
+                <th>Контактное лицо</th>
+                <th>Телефон</th>
+              </tr>
+            </thead>
+
+              {% for order in customer %}
+                <tr>
+                  <td>{{ order.name_firm }}</td>
+                  <td>{{ order.name_contact }}</td>
+                  <td>{{ order.phone }}</td>
+                </tr>
+              {% endfor %}
+
+          </table>
+        </div>
+
+    </div>
+    <div class="col-md-8">
+      <label for="name_prj" class="form-label">Наименование проекта:</label>
+      <input type="text" class="form-control" maxlength="200" name="name_prj" id="name_prj" placeholder="Наименование проекта" required />
+    </div>
+    <div class="col-md-4">
+      <label for="progress" class="form-label">Стадия:</label>
+      <select id="progress" class="form-control" name="progress" required>
+        <option  value="{{progress.name_progress}}">{{progress.name_progress}}</option>        
+          {% for org in progresses %}
+          <option value="{{org.name_progress}}"
+              {% if org == current_org %} selected="selected" {% endif %}>
+              {{org.name_progress|capfirst}}
+          </option>
+          {% endfor %}        
+    </select>      
+
+    </div>
+    <div class="col-md-4">
+      <label for="number_prj" class="form-label">Номер документа:</label>
+      <input type="text" class="form-control" maxlength="20" name="number_prj" id="number_prj" placeholder="Номер документа" required />
+    </div>
+    <div class="col-md-4">
+      <label for="date_start" class="form-label">Дата начала:</label>
+      <input type="date" class="form-control" name="date_start" id="date_start" placeholder="Дата начала" required />
+    </div>
+    <div class="col-md-4">
+      <label for="date_finish" class="form-label">Дата окончания:</label>
+      <input type="date" class="form-control" name="date_finish" id="date_finish" placeholder="Дата окончания" required />
+    </div>
+    <div class="col-md-4">
+      <label for="sum_prj" class="form-label">Сумма:</label>
+      <input type="number" step="any" min="0.01" max="999999999.99" class="form-control right" name="sum_prj" id="sum_prj" placeholder="Сумма документа" required />
+    </div>
+
+    <div class="col-md-12">
+      <label for="comments" class="form-label">Комментарий:</label>
+      <input type="textarea" class="form-control" name="comments" id="comments" placeholder="Работы" required />
+    </div>
+  </form>
+
+
+  <script>
+    let table = new DataTable('#customerIDTable');
+    table.on('click', 'tbody tr', function () {
+            let data = table.row(this).data();
+            customer_id.value = data[0];
+            customerID.value = data[0];
+            document.getElementById('customer').className = 'collapse';
+    })
+ </script>
+
+{% endblock %}

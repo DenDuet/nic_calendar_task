@@ -1,0 +1,1101 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"> {% endcomment %}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/resources/demos/style.css">   {% endcomment %}
+ {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>    {% endcomment %}
+{% comment %} <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {% endcomment %}
+{% comment %} <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {% endcomment %}
+{% comment %} https://picsum.photos/100/100 {% endcomment %}
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <link href="{% static 'css/main_block.css' %}" rel="stylesheet"> 
+    <link href="{% static 'css/jquery-ui.css' %}" rel="stylesheet"> 
+    {% comment %} <link href="{% static 'css/jquery-ui_1.css' %}" rel="stylesheet">  {% endcomment %}
+
+{% comment %} ----------------------------------------------- {% endcomment %}
+<div class="output-container">
+
+	<div class="console-schedular">
+			<div class="schedular-filters">
+				<div class="vehicle-type">
+					<select class="select full">
+						<option>Select Vehicle Type</option>
+						<option>SUV</option>
+						<option>SEDAN</option>
+					</select>
+				</div><!-- Vehicle Type -->
+
+				<div class="date-changer">
+					<a class="custom-btn prevDate" href="#" title=""><i class="fa fa-chevron-left"></i></a>
+					<input type="text" class="new-datepicker" />
+					<a class="custom-btn nextDate" href="#" title=""><i class="fa fa-chevron-right"></i></a>
+				</div><!-- Date Picker -->
+			</div> <!-- Schedular Filters -->
+
+			<div class="schedular-body">
+				<div class="vehicles-info">
+					<h3>Vehicle Information</h3>
+					<div class="car">
+							<h5>BMW M SERIES</h5> <i>Car 123</i>
+
+					</div>
+
+					<div class="car">
+						<div class="car-top"> <span>PLA 9876 : 2018</span> <i>22H</i> </div>
+						<div class="car-bottom">
+							<h5>BMW M SERIES</h5> <i>Car 123</i>
+						</div>
+					</div><!-- Car -->
+
+					<div class="car">
+						<div class="car-top"> <span>NY 614: 2018</span> <i>30H</i> </div>
+						<div class="car-bottom">
+							<h5>BMW X1</h5> <i>Car 678</i>
+						</div>
+					</div><!-- Car -->
+
+					<div class="car">
+						<div class="car-top"> <span>T76768 : 2015</span> <i>42H</i> </div>
+						<div class="car-bottom">
+							<h5>BMW i8</h5> <i>Car 987</i>
+						</div>
+					</div><!-- Car -->
+				</div><!-- Vehicle Information -->
+
+				<div class="main-schedular">
+				<div class="grids">
+					<div class="grids-head">
+						<div class="timeslot"> 12:00 AM </div>
+						<div class="timeslot"> 12:30 AM </div>
+						<div class="timeslot"> 01:00 AM </div>
+						<div class="timeslot"> 01:30 AM </div>
+						<div class="timeslot"> 02:00 AM </div>
+						<div class="timeslot"> 02:30 AM </div>
+						<div class="timeslot"> 03:00 AM </div>
+						<div class="timeslot"> 03:30 AM </div>
+						<div class="timeslot"> 04:00 AM </div>
+						<div class="timeslot"> 04:30 AM </div>
+						<div class="timeslot"> 05:00 AM </div>
+						<div class="timeslot"> 05:30 AM </div>
+						<div class="timeslot"> 06:00 AM </div>
+						<div class="timeslot"> 06:30 AM </div>
+						<div class="timeslot"> 07:00 AM </div>
+						<div class="timeslot"> 07:30 AM </div>
+						<div class="timeslot"> 08:00 AM </div>
+						<div class="timeslot"> 08:30 AM </div>
+						<div class="timeslot"> 09:00 AM </div>
+						<div class="timeslot"> 09:30 AM </div>
+						<div class="timeslot"> 10:00 AM </div>
+						<div class="timeslot"> 10:30 AM </div>
+						<div class="timeslot"> 11:00 AM </div>
+						<div class="timeslot"> 11:30 AM </div>
+					</div>
+					<div class="grids-body">
+						<div class="ride resize butNotHere maintenance" style="width: 202px; left: 102px; top: 184px">
+							<div class="other-info">
+								<i class="ion-settings"></i>
+								<span>Maintenance</span>
+							</div>
+						</div>
+
+						<div class="ride resize butNotHere return" style="width:304px; left: 510px; top:93px;">
+							<div class="other-info">
+								<i class="ion-arrow-return-left"></i>
+								<span>Return To Base</span>
+							</div>
+						</div>
+
+						<div class="ride resize butNotHere" style="width:304px">
+							<div class="passenger-info complete-add scrolly">
+								<ul>
+									<li><i class="ion-ios-location-outline"></i> Estate of Jane Meriweather C/O Hawaiian Trust Company Honolulu, HI 96801-1234</li>
+								</ul>
+							</div>
+							<div class="passenger-info scrolly">
+								<ul>
+									<li><i class="ion-android-person"></i> <strong class="pass-name">Mr. John Smith</strong></li>
+									<li><i class="ion-ios-telephone-outline"></i> <span class="pass-contact">718-444-665</span></li>
+									<li><a class="show-add" href="#" title=""> <i class="ion-ios-location-outline"></i> <span class="pass-loc">Estate of Jane Meriweather C/O Hawaiian Trust Company Honolulu, HI 96801-1234</span></a></li>
+								</ul>
+							</div>
+							<div class="assign-driver">
+								<span>Driver Not Assigned</span>
+								<a class="custom-btn" data-toggle="modal" data-target="#assign-driver" href="#" title=""><i class="ion-android-person-add"></i> Assign Driver</a>
+							</div>
+						</div><!-- Ride -->
+
+						<div class="ride resize butNotHere assigned" style="left: 204px; top: 93px; width:202px">
+							<div class="passenger-info complete-add scrolly">
+								<ul>
+									<li><i class="ion-ios-location-outline"></i> 422 Street, Main Boulevard</li>
+								</ul>
+							</div>
+							<div class="passenger-info scrolly">
+								<ul>
+									<li><i class="ion-android-person"></i> <strong class="pass-name">Mr. Martin Bros</strong></li>
+									<li><i class="ion-ios-telephone-outline"></i> <span class="pass-contact">574-333-589</span></li>
+									<li><a class="show-add" href="#" title=""> <i class="ion-ios-location-outline"></i> <span class="pass-loc">422 Street, Main Boulevard</span></a></li>
+								</ul>
+							</div>
+							<div class="driver-info">
+								<ul>
+									{% comment %} <li><img src="https://picsum.photos/100/100"> <i class="ion-android-person"></i> <strong class="driver-name">John Smith</strong></li> {% endcomment %}
+									<li><i class="ion-ios-clock-outline"></i> <span><i class="hr">02</i>:<i class="mins">02</i>Hours</span></li>
+								</ul>
+							</div>
+						</div><!-- Ride -->
+
+						<div class="grids-row">
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+						</div>
+						<div class="grids-row">
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+						</div>
+						<div class="grids-row">
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+						</div>
+						<div class="grids-row">
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+							<div class="timeslot"> + </div>
+						</div>
+
+					</div>
+				</div>
+				</div>
+			</div><!-- Schedular Body -->
+		</div><!-- console Schedular -->
+
+
+		<div class="ride-menu new-ride">
+			<div class="menu-title">
+				<h4>New Ride</h4>
+				<p>Select Below An Action To Perform</p>
+			</div>
+			<ul>
+				<li><a class="new-ride" data-toggle="modal" data-target="#add-new" href="#" title=""><i class="ion-model-s"></i> Add A New Ride</a></li>
+				<li><a data-rideclass="return" class="other-info-btn" href="#" title=""><i class="ion-arrow-return-left"></i> <span>Return To Base</span></a></li>
+				<li><a data-rideclass="maintenance" class="other-info-btn" href="#" title=""><i class="ion-settings"></i> <span>Maintenance</span></a></li>
+				<li><a data-rideclass="preparation" class="other-info-btn" href="#" title=""><i class="ion-pinpoint"></i> <span>Preparation</span></a></li>
+				<li><a data-rideclass="service" class="other-info-btn" href="#" title=""><i class="ion-pull-request"></i> <span>Vehicle Service</span></a></li>
+				<li class="bordered"><a href="#" title=""><i class="ion-android-cancel"></i> Cancel</a></li>
+			</ul>
+		</div><!-- New Ride Menu -->
+
+
+		<div class="ride-menu ride-opts">
+			<div class="ride-options">
+				<ul>
+					<li><a class="edit-ride" href="#" title=""><i class="ion-edit"></i> Edit Ride</a></li>
+					<li><a class="delete-ride" href="#" title=""><i class="ion-android-remove-circle"></i> Delete Ride</a></li>
+				</ul>
+			</div><!-- Ride Options -->
+		</div>
+
+
+
+	<!-- New Ride  -->
+	<div class="modal custom-modal" id="add-new">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form class="custom-form" id="add-ride" name="Form">
+		<div class="modal-header">
+			<div class="modal-title">
+				<h4>New Ride</h4>
+				<span>Fill The Form Below To Add A New Ride</span>
+			</div>
+		</div>
+		<div class="modal-body">
+				<div class="form-group row">
+					<label class="col-lg-5 col-md-12  col-form-label">Passenger's Name</label>
+					<div class="col-lg-7 col-md-12">
+						<input id="pass-name" type="text" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-5 col-md-12  col-form-label">Contact #:</label>
+					<div class="col-lg-7 col-md-12">
+						<input id="pass-contact" type="text" class="form-control" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-lg-5 col-md-12  col-form-label">Pickup Location:</label>
+					<div class="col-lg-7 col-md-12">
+						<textarea id="pass-loc" required></textarea>
+					</div>
+				</div>
+		</div>
+		<div class="modal-footer">
+			<button class="custom-btn ride-cancel color2"><i class="ion-android-cancel"></i> Cancel Ride</button>
+			<button class="custom-btn add-ride-btn" type="submit"><i class="ion-android-add-circle"></i> Add A Ride</button>
+			<button class="custom-btn hidden edit-ride-btn" type="submit"><i class="ion-android-add-circle"></i> Edit Ride</button>
+		</div>
+		</form>
+		</div>
+	</div>
+	</div>
+
+
+	<!-- Assign Driver  -->
+	<div class="modal custom-modal" id="assign-driver">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form class="custom-form" id="select-driver">
+		<div class="modal-header">
+			<div class="modal-title">
+				<h4>Assign A Driver</h4>
+				<span>Assign Driver To This Ride</span>
+			</div>
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+		<div class="modal-body">
+				<table class="table driver-selector custom-table style2">
+					<thead>
+						<tr>
+							<th>Image</th>
+							<th>Name</th>
+							<th>License</th>
+							<th>Weekly Earnings</th>
+							<th>Working Days</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							{% comment %} <td class="console-driver-img"><img src="https://picsum.photos/100/100" style="width:30px"></td> {% endcomment %}
+							<td class="console-driver" drivername="John Smith">John Smith</td>
+							<td>4/5/20</td>
+							<td>$345</td>
+							<td>Mon-Tues-Wed-Thurs</td>
+						</tr>
+						<tr>
+							{% comment %} <td class="console-driver-img"><img src="https://picsum.photos/100/100" style="width:30px"></td> {% endcomment %}
+							<td class="console-driver" drivername="Bale Disel">Bale Disel</td>
+							<td>5/15/19</td>
+							<td>$564</td>
+							<td>Fri-Sat-Sun</td>
+						</tr>
+						<tr>
+							{% comment %} <td class="console-driver-img"><img src="https://picsum.photos/100/100" style="width:30px"></td> {% endcomment %}
+							<td class="console-driver" drivername="Macelo Benz">Macelo Benz</td>
+							<td>12/30/20</td>
+							<td>$543</td>
+							<td>Mon-Tues-Wed-Thurs</td>
+						</tr>
+					</tbody>
+				</table>
+		</div>
+		<div class="modal-footer">
+			<a href="#" title="" class="custom-btn cancel-popup color2" data-dismiss="modal"><i class="ion-android-cancel"></i> Cancel</a>
+			<button class="custom-btn" type="submit"><i class="ion-android-add-circle"></i> Assign</button>
+		</div>
+		</form>
+		</div>
+	</div>
+	</div>
+
+
+	<!-- Assign Driver  -->
+	<div class="modal custom-modal" id="change-ride">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form class="custom-form" id="ride-changer">
+		<div class="modal-header">
+			<div class="modal-title">
+				<h4>Edit Ride</h4>
+				<span>Edit The Following Ride</span>
+			</div>
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		</div>
+		<div class="modal-body">
+				<div class="form-group row">
+					<label class="col-lg-5 col-md-12  col-form-label">Edit This Ride</label>
+					<div class="col-lg-7 col-md-12">
+						<select class="select change-ride">
+							<option value="return">Return</option>
+							<option value="maintenance">Maintenance</option>
+							<option value="preparation">Preparation</option>
+							<option value="service">Service</option>
+						</select>
+					</div>
+				</div>
+		</div>
+		<div class="modal-footer">
+			<a href="#" title="" class="custom-btn color2" data-dismiss="modal"><i class="ion-android-cancel"></i> Cancel</a>
+			<button class="custom-btn" type="submit"><i class="ion-android-add-circle"></i> Edit</button>
+		</div>
+		</form>
+		</div>
+	</div>
+	</div>
+
+</div>
+
+  
+
+{% comment %} -------------------------------------------------- {% endcomment %}
+{% comment %} <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> {% endcomment %}
+{% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>    
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"></script> {% endcomment %}
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+
+<script>
+
+			{% comment %} $( ".car" ).draggable({
+				connectToSortable: ".grids-body",
+				helper: "clone",
+				revert: "invalid",
+				grid: [ 102,91]} {% endcomment %}
+		var dragMaster = (function() {
+			// private методы и свойства
+			var dragObject = $(this);
+			var mouseOffset;
+
+
+			function mouseDown(e) {
+				{% comment %} клик на переносимом элементе: начать перенос {% endcomment %}
+				{% comment %} var $this = $(this);         {% endcomment %}
+				// Клонируем оригинал
+				var clone = dragObject.clone(); 
+				// Устанавливаем координаты и абсолютное позиционирование относительно body
+				// Чтобы вставить новый блок в то же место где был оригинал
+
+				// Делаем элемент перетаскиваемым
+				clone.draggable({
+						containment: '.grids-body',
+						zIndex: 9999,
+						appendTo: '.grids-body'
+				});
+				// Добавляем клон на страницу (в body), а оригинал - удаляем
+				$('.grids-body').append(clone); 				
+				clone.css({'height':'80px', 'width':'101px'});
+				{% comment %} clone.css({'top':e.pageY, 'left':e.pageX}); {% endcomment %}
+				console.log(e.pageX, e.pageY )
+				{% comment %} clone.css({'top':clone.position.top, 'left':clone.position.left}); {% endcomment %}
+				clone.removeClass("car");
+				clone.addClass("ride");
+				clone.addClass("resize");	
+				clone.addClass("butNotHere");	
+				clone.addClass("maintenance");			
+				clone.resizable();
+				clone.trigger(e);				
+			}
+
+			function mouseMove(e){
+				if (dragObject) {
+					{% comment %} отобразить перенос объекта {% endcomment %}
+				}
+			}
+			function mouseUp(e){
+				if (dragObject) {
+					{% comment %} конец переноса {% endcomment %}
+					clone.css({'top':e.pageY, 'left':e.pageX});
+
+				}
+			}
+			// public методы и свойства
+			return {
+				init: function() {
+					// инициализовать контроллер
+					document.onmousemove = mouseMove
+					document.onmouseup = mouseUp
+				},
+				makeDraggable: function(element){
+					// сделать элемент переносимым
+					element.onmousedown = mouseDown
+				}
+			}
+
+		});
+
+
+
+
+			$(".car2").mousedown(function(e){
+				var $this = $(this);        
+				// Клонируем оригинал
+				var clone = $this.clone(); 
+				// Устанавливаем координаты и абсолютное позиционирование относительно body
+				// Чтобы вставить новый блок в то же место где был оригинал
+
+				// Делаем элемент перетаскиваемым
+				clone.draggable({
+						containment: '.grids-body',
+						zIndex: 9999,
+						appendTo: '.grids-body'
+				});
+				// Добавляем клон на страницу (в body), а оригинал - удаляем
+				$('.grids-body').append(clone); 				
+				clone.css({'height':'80px', 'width':'101px'});
+				clone.css({'top':e.pageY, 'left':e.pageX});
+				console.log(e.pageX, e.pageY )
+				{% comment %} clone.css({'top':clone.position.top, 'left':clone.position.left}); {% endcomment %}
+				clone.removeClass("car");
+				clone.addClass("ride");
+				clone.addClass("resize");	
+				clone.addClass("butNotHere");	
+				clone.addClass("maintenance");			
+				clone.resizable();
+				clone.trigger(e);
+		
+
+			});
+
+			$( ".car1" ).draggable({
+				axis: "x,y",
+				animate: true,
+				grid: [ 102,91],
+				containment:'.grids-body',
+				helper: "clone", 
+				scroll:true,
+				revert: "invalid",
+				refreshPositions: true,
+				start: function(event,ui) {
+				},
+				stop: function(event,ui) {
+
+				}
+			}).droppable().resizable();
+			{% comment %} .droppable().resizable(); {% endcomment %}
+			{% comment %} .removeClass("car").addClass("ride").addClass("resize"); {% endcomment %}
+
+			$(".grids-body").droppable({
+				accept: ".car",
+
+				
+			});
+
+
+$(window).on("load", function() {
+
+
+
+			function ride(){
+				/*=== Draggable Box ===*/
+			$(".resize").draggable({
+				axis: "x,y",
+				animate: true,
+				grid: [ 102,91],
+				containment:'.grids-body',
+				scroll:true,
+				revert: "valid",
+				refreshPositions: true,
+				start: function(event,ui) {
+				},
+				stop: function(event,ui) {
+
+				}
+			});
+
+
+			/*=== Droppable ===*/
+			$( ".ride" ).droppable({
+				tolerance: "touch"
+			});
+
+
+			var targetPos = [];
+			var sp = "";					
+			/*=== Resizable Box ===*/
+			$(".resize").resizable({
+				grid: [ 102, 0 ],
+				animate: false,
+				handles: 'e',
+				containment:'.grids-body',
+				maxHeight:77,
+				minHeight:77,
+				start: function(event, ui){ 
+					targetPos = [];
+					$('.ride').each(function(){
+						targetPos.push($(this).position());
+					});
+					sp = ui.position.left + ui.size.width;
+				},
+				stop: function(event, ui){ 
+					var ep = ui.position.left + ui.size.width;
+					var tp = ui.position.top;
+					$.each(targetPos, function(i,e){
+						if(targetPos[i].top == tp){
+							if(targetPos[i].left > sp && targetPos[i].left < ep){
+								ui.element.css(ui.originalSize);
+								setTimeout(function(){
+									detectShortRides();
+								},100);
+							}
+						}
+					});
+
+				}
+
+			});
+
+
+			$( ".resize" ).on( "resizestop", function( event, ui ){
+				if(ui.size.width <= 204){
+					$(this).addClass("short-ride");
+				}
+				else{
+					$(this).removeClass("short-ride");
+				}
+				setTimeout(function(){
+					RideTime(ui.element[0]);
+				},400);
+			});
+
+
+			function detectShortRides(){
+				$(".ride").each(function(){
+					if($(this).width() <=  204){
+						$(this).addClass("short-ride");
+					}
+					else{
+						$(this).removeClass("short-ride");
+					}
+				});
+			}
+			detectShortRides();
+
+
+			$(".show-add").on("click",function(){
+				$(this).parents('.ride').find('.complete-add').fadeIn();
+			});
+
+			$(".complete-add").on("click",function(){
+				$(this).fadeOut();
+			});
+		}
+		ride();
+
+		/*=== New Ride Menu ===*/
+		$("html").on("click",function(event){
+			if($(event.target).is(".grids-body .timeslot")){
+		        $("#add-ride .modal-title h4").text('New Ride');
+				$("#pass-name").val("");
+				$("#pass-contact").val("");
+				$("#pass-loc").val("");
+				$("#add-ride .add-ride-btn").show();
+				$("#add-ride .edit-ride-btn").hide();
+
+				$(".ride-opts").removeClass("show");
+				$(".new-ride").addClass("show");
+				let left = $(event.target).offset().left;
+				let top = $(event.target).offset().top;
+				$(".new-ride").css({
+					"left":left + 50,
+					"top":top + 30
+				});
+			}
+			else{
+				$(".ride-opts").removeClass("show");
+				$(".new-ride").removeClass("show");
+				$(".new-ride").css({
+					"left":0,
+					"top":0
+				});
+			}
+		});
+
+		/*=== Menu On Right For Edit Or Delete A Ride ===*/
+		document.oncontextmenu = function() { return false; };
+		$("body").on("mousedown",".grids-body .ride",function(e){
+			if( e.button == 2 ) {
+				$(".new-ride").removeClass("show");
+				$(".ride").removeClass("selected");
+				$(this).addClass("selected");
+				$(".ride-opts").addClass("show");
+				let left = $(this).offset().left;
+				let top = $(this).offset().top;
+				$(".ride-opts").css({
+					"left":left + 50,
+					"top":top + 30
+				});
+				return false;
+			}
+			return true;
+		});
+
+		/*=== Delete Ride ===*/
+		$(".delete-ride").on("click",function(){
+			$(".ride.selected").detach();
+		});
+
+		/*=== Edit Ride Popup Open ===*/
+		$(".edit-ride").on("click",function(){
+			if($(".ride.selected").hasClass('maintenance') || $(".ride.selected").hasClass('preparation') || $(".ride.selected").hasClass('return') || $(".ride.selected").hasClass('service')){
+				$("#change-ride").modal('show');
+		    	$('.change-ride').val('service').trigger('change');
+			}
+			else{
+				$("#add-new").modal('show');
+				let name = $(".ride.selected .passenger-info .pass-name").text();
+				let contact = $(".ride.selected .passenger-info .pass-contact").text();
+				let loc = $(".ride.selected .passenger-info .pass-loc").text();
+				$("#add-ride #pass-name").val(name);
+				$("#add-ride #pass-contact").val(contact);
+				$("#add-ride #pass-loc").val(loc);
+				$("#add-ride .modal-title h4").text('Edit Ride');
+				$("#add-ride .add-ride-btn").hide();
+				$("#add-ride .edit-ride-btn").show();
+			}
+		});
+
+
+
+		/*=== Ride Changer ===*/
+		$("#ride-changer").submit(function(){
+			let changedRide = $('.change-ride').select2('data')[0].element.value;
+			let rideName = $('.change-ride').select2('data')[0].text;
+			$(".ride.selected .other-info span").html(rideName);
+			if(rideName == 'Return'){
+				$(".ride.selected .other-info i").attr('class','ion-arrow-return-left');
+			}
+			if(rideName == 'Maintenance'){
+				$(".ride.selected .other-info i").attr('class','ion-settings');
+			}
+			if(rideName == 'Preparation'){
+				$(".ride.selected .other-info i").attr('class','ion-pinpoint');
+			}
+			if(rideName == 'Service'){
+				$(".ride.selected .other-info i").attr('class','ion-pull-request');
+			}
+			$(".ride.selected").attr('class',"ride resize butNotHere " + changedRide);
+			$("#change-ride").modal('hide');
+			return false;
+		});
+
+		/*=== New Ride Menu Open Position ===*/
+		var myposleft;
+		var mypostop;
+	    $(".timeslot").on("click",function(){
+	        myposleft = $(this).offset().left - $(".grids-body").offset().left - 1;
+	        mypostop = $(this).offset().top - $(".grids-body").offset().top + 2;
+	    });
+
+		/*=== Add New Ride On Submit Popup Form ===*/
+	    $('#add-ride').submit(function(){
+			// Get Values Filled in the Form
+			let name = $("#pass-name").val();
+			let contact = $("#pass-contact").val();
+			let date = $("#pass-date").val();
+			let loc = $("#pass-loc").val();
+			// If New Ride
+			if($(".custom-btn:focus").hasClass("add-ride-btn")){
+		        $(".grids-body").prepend(`
+		            <div class="ride resize butNotHere" style="left:${myposleft}px; top:${mypostop}px">
+		                <div class="passenger-info complete-add scrolly">
+		                    <ul>
+		                        <li><i class="ion-ios-location-outline"></i>${loc}</li>
+		                    </ul>
+		                </div>
+		                <div class="passenger-info scrolly">
+		                    <ul>
+								<li><i class="ion-android-person"></i> <strong class="pass-name">${name}</strong></li>
+								<li><i class="ion-ios-telephone-outline"></i> <span class="pass-contact">${contact}</span></li>
+								<li><a class="show-add" href="#" title=""> <i class="ion-ios-location-outline"></i> <span class="pass-loc"> ${loc}</span></a></li>
+		                    </ul>
+		                </div>
+		                <div class="assign-driver">
+		                    <span>Driver Not Assigned</span>
+		                    <a class="custom-btn" data-toggle="modal" data-target="#assign-driver"  href="#" title=""><i class="ion-android-person-add"></i> Assign Driver</a>
+		                </div>
+						<div class="short-ride-info">
+							<ul>
+								<li><i class="ion-android-person"></i> <strong class="pass-name">${name}</strong></li>
+								<li><i class="ion-ios-telephone-outline"></i> <span class="pass-contact">${contact}</span></li>
+								<li><a class="show-add" href="#" title=""> <i class="ion-ios-location-outline"></i> <span  class="pass-loc">${loc}</span></a></li>
+							</ul>
+						</div>
+		            </div>
+		        `);
+		        ride();
+				customScroll();
+
+		        $("#add-new").modal('hide');
+		        return false;
+	    	}
+			// If Edit Ride
+	    	else if($(".custom-btn:focus").hasClass("edit-ride-btn")){
+	    		$(".ride.selected .pass-name").text(name);
+	    		$(".ride.selected .pass-contact").text(contact);
+	    		$(".ride.selected .pass-loc").text(loc);
+
+	    		$(".ride.selected").removeClass('selected');
+				$("#pass-name").val("");
+				$("#pass-contact").val("");
+				$("#pass-loc").val("");
+				$("#add-new").modal('hide');
+				$("#add-ride .edit-ride-btn").hide();
+				$("#add-ride .add-ride-btn").show();
+		        $("#add-ride .modal-title h4").text('New Ride');
+				return false;
+			}
+	    });
+
+		/*=== Ride Cancel ===*/
+	    $(".ride-cancel").on("click",function(){
+    		$(".ride.selected").removeClass('selected');
+			$("#pass-name").val("");
+			$("#pass-contact").val("");
+			$("#pass-loc").val("");
+			$("#add-new").modal('hide');
+	    });
+
+
+		/*=== Return To Base ===*/
+	    $(".other-info-btn").on("click",function(){
+	    	let iconClass = $(this).find('i').attr("class");
+	    	let text = $(this).find('span').text();
+	    	let rideClass = $(this).attr('data-rideclass');
+			$(".grids-body").prepend(`
+				<div class="ride resize butNotHere ${rideClass}" style="left:${myposleft}px; top:${mypostop}px">
+					<div class="other-info">
+						<i class="${iconClass}"></i>
+						<span>${text}</span>
+					</div>
+				</div>`);
+	        ride();
+	        $(".new-ride").removeClass("show");
+	        return false;
+	    });
+
+
+
+		/*=== Select Ride To Assign Driver ===*/
+	    $('body').on("click",'a[data-target="#assign-driver"]',function(){
+	    	$(this).parents('.ride').addClass('assign-to-me');
+	        $(".driver-selector tr").removeClass('selected');
+	    });
+
+
+	    $("body").on("click",".driver-selector tr",function(){
+	    	$(this).addClass('selected').siblings().removeClass('selected');
+	    });
+
+		/*=== Select Driver ===*/
+	    $("#select-driver").submit(function(){
+	    	// let selectedDriver = $('.all-driver').select2('data')[0].text;
+	    	// let selectedDriver = $("#new-driver").val();
+	    	// let driverImage = $(".inputpicker-wrapped-list .table>tbody>tr>td img").attr('src');
+	    	let selectedDriver = $(".driver-selector tr.selected td.console-driver").text();
+	    	let driverImage =  $(".driver-selector tr.selected td.console-driver-img img").attr('src');
+	    	$(".assign-to-me .assign-driver").detach();
+	    	$(".assign-to-me").append(`
+			<div class="driver-info">
+				<ul>
+					<li><img src="${driverImage}"> <i class="ion-android-person"></i> <strong class="driver-name">${selectedDriver}</strong></li>
+					<li><i class="ion-ios-clock-outline"></i> <span><i class="hr">02</i>:<i class="mins">02</i>Hours</span></li>
+				</ul>
+			</div>`);
+
+			RideTime(".assign-to-me");
+
+	    	$(".assign-to-me").addClass('assigned').removeClass('assign-to-me');
+
+	    	if($('.ride').hasClass('change-driver')){
+	    		$(".change-driver .driver-info .driver-name").html(selectedDriver);
+	    		$(".change-driver .driver-info ul li img").attr('src',driverImage);
+	    		$(".change-driver").removeClass('change-driver');
+		    	$("#assign-driver .modal-header .modal-title h4").text('Assign A Driver');
+	    	}
+
+	        $("#assign-driver").modal('hide');
+	        return false;
+	    });
+
+
+		/*=== Cancel Popup ===*/
+	    $(".cancel-popup").on("click",function(){
+			$(".change-driver").removeClass('change-driver');
+	    });
+
+
+		/*=== Change Driver ===*/
+	    $("body").on("click" , ".driver-info" , function(){
+	    	$(this).parents('.ride').addClass('change-driver');
+	    	let thisDriver = $(this).find('.driver-name').text();
+	    	$("#assign-driver .modal-header .modal-title h4").text('Change The Driver');
+	    	$("#assign-driver").modal('show');
+	    	$(".driver-selector tr").removeClass('selected');
+	    	console.log($(`td[drivername='${thisDriver}']`));
+	    	$("td[drivername='" + thisDriver + "']").parents('tr').addClass('selected');
+	    });
+
+
+		/* ===  Add Short Ride Info To Each Ride === */
+	    $(".ride").each(function(){
+	    	if($(this).hasClass('return') || $(this).hasClass('maintenance') || $(this).hasClass('preparation') || $(this).hasClass('service')){
+	    		return true
+	    	}
+	    	else{
+	    		// Add Short Ride Info To Each Ride
+				let name = $(this).find(".passenger-info .pass-name").text();
+				let contact = $(this).find(".passenger-info .pass-contact").text();
+				let loc = $(this).find(".passenger-info .pass-loc").text();
+				$(this).append(`<div class="short-ride-info">
+					<ul>
+						<li><i class="ion-android-person"></i> <strong class="pass-name">${name}</strong></li>
+						<li><i class="ion-ios-telephone-outline"></i> <span  class="pass-contact">${contact}</span></li>
+						<li><i class="ion-ios-location-outline"></i> <span class="pass-loc">${loc}</span></li>
+					</ul>
+				</div>`);
+				RideTime(this);
+	    	}
+	    });
+
+
+		// Update Driver Time For the Assigned Drive
+		function RideTime(thisRide){
+			let rideWidth  = $(thisRide).width();
+			let updateTime = convertPixelToTime(rideWidth);
+
+			function pad2(number) {
+			     return (number < 10 ? '0' : '') + number
+			}
+
+
+
+			$(thisRide).find(".driver-info .hr").text(pad2(updateTime.h));
+			$(thisRide).find(".driver-info .mins").text(pad2(updateTime.m));
+		}
+
+
+
+
+		/* ===  Convert Mili Seconds Hours === */
+		function convertMiliseconds(miliseconds, format) {
+		var days, hours, minutes, seconds, total_hours, total_minutes, total_seconds;
+
+		total_seconds = parseInt(Math.floor(miliseconds / 1000));
+		total_minutes = parseInt(Math.floor(total_seconds / 60));
+		total_hours = parseInt(Math.floor(total_minutes / 60));
+		days = parseInt(Math.floor(total_hours / 24));
+
+		seconds = parseInt(total_seconds % 60);
+		minutes = parseInt(total_minutes % 60);
+		hours = parseInt(total_hours % 24);
+
+		switch(format) {
+		case 's':
+			return total_seconds;
+			break;
+		case 'm':
+			return total_minutes;
+			break;
+		case 'h':
+			return total_hours;
+			break;
+		case 'd':
+			return days;
+			break;
+		default:
+			return { d: days, h: hours, m: minutes, s: seconds };
+			//return { h: hours, m: minutes}
+			}
+		};
+
+		function convertPixelToTime(pixels){
+			let onePx = 17647.05882352941;
+			return convertMiliseconds(pixels * onePx);
+		}
+
+
+		setTimeout(function(){
+			$(".xdsoft_today").trigger('click');
+		},1000);
+    
+    
+    /* === Date Time Picker == */
+    jQuery('.new-datepicker').datetimepicker({
+	    validateOnBlur: false,
+	    timepicker:false,
+	    //format:'D, M d,Y',
+		format: 'M-d-Y',
+	    value: new Date(),
+	    defaultDate:false,
+		onSelectDate:function(dp,$input){
+		}    
+    });
+
+    jQuery('.datetimepicker').datetimepicker({
+    validateOnBlur: false,
+    format:'m-d-Y h:i A',
+    value: new Date()
+    });
+
+    jQuery('.timepicker').datetimepicker({
+    validateOnBlur: false,
+    datepicker:false,
+    format:'h:i A',
+    value: new Date()
+    });
+
+
+
+var month = new Array();
+month[0] = "Jan";
+month[1] = "Feb";
+month[2] = "Mar";
+month[3] = "Apr";
+month[4] = "May";
+month[5] = "Jun";
+month[6] = "Jul";
+month[7] = "Aug";
+month[8] = "Sep";
+month[9] = "Oct";
+month[10] = "Nov";
+month[11] = "Dec";
+
+
+    $(".nextDate").on("click",function(){
+		let a = $(".new-datepicker").val();
+		let newDate = new Date(new Date(a).getTime()+(1*24*60*60*1000));
+		let date = newDate.getDate();
+		let tempMonth = month[newDate.getMonth()];
+		let year = newDate.getFullYear();
+		console.log(newDate);
+		$(".new-datepicker").val(tempMonth + "-" + date  + "-" + year);
+		return false;
+    });
+
+    $(".prevDate").on("click",function(){
+		let a = $(".new-datepicker").val();
+		let newDate = new Date(new Date(a).getTime()-(1*24*60*60*1000));
+		let date = newDate.getDate();
+		let tempMonth = month[newDate.getMonth()];
+		let year = newDate.getFullYear();
+		console.log(newDate);
+		$(".new-datepicker").val(tempMonth + "-" + date  + "-" + year);
+		return false;
+    });    
+    
+    /*=== Select2 ===*/
+    $('.select,.bottom select').select2({
+        placeholder: 'Select an option'
+    });    
+      
+    customScroll();
+      
+	});
+
+
+function customScroll(){
+    $(".scrolly").mCustomScrollbar({
+        axis:"y",
+        theme:"light-3",
+        scrollbarPosition:"outside"
+    });
+
+}
+
+
+
+
+</script>
+
+
+{% comment %} -------------------------------------------------- {% endcomment %}
+
+{% endblock %}

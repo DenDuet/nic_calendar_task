@@ -1,0 +1,158 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/resources/demos/style.css">   {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {% endcomment %}
+
+{% comment %} <meta name="viewport" content="width=device-width, initial-scale=1">   {% endcomment %}
+{% endblock %}
+
+{% block content %}
+
+
+<div id="droppable" class="main_div ui-widget-header">
+  <p>Drop here</p>
+  {% comment %} <div class="div_move"></div>
+  <div class="div_move"></div>
+  <div class="div_move"></div>
+  <div class="div_move"></div>
+  <div class="div_move"></div> {% endcomment %}
+  {% comment %} <div class="div_move movable" id="element">Drag&Drop</div> {% endcomment %}
+</div>
+
+<div id="draggable" class="objectDrag ui-widget-content">
+  <p>Drag me to my target</p>
+  <h3 class="ui-widget-header">Resizable</h3>
+</div>
+ 
+<div class="element-wrp">
+	<div id="element">Drag&Drop</div>
+</div>
+ 
+<script>
+$(function(){
+	$('#element').draggable({
+		containment: '.element-wrp',
+		grid: [20, 20]
+	});
+});
+</script>
+
+{% comment %} 
+<div class="main" id="main">
+  <div class="header"></div>
+  <div class="innerMain">
+    <div class="content">
+      You can resize me!
+    </div>
+  </div>
+</div>  {% endcomment %}
+
+
+{% comment %} <div class="div_move"></div>
+<div class="div_move"></div>
+<div class="div_move"></div>
+<div class="div_move"></div> {% endcomment %}
+
+{% comment %} <div id="resizable" class="ui-widget-content">
+  <h3 class="ui-widget-header">Resizable 2</h3>
+</div> {% endcomment %}
+
+{% comment %} <div id="droppable" class="div_move movable ui-widget-header">
+  <p>Drop here</p>
+</div> {% endcomment %}
+
+
+{% comment %} <script src="/jquery/2.1.1/jquery.min.js"></script>
+<script src="/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+$(function(){
+	$("#element").draggable();
+});
+</script> {% endcomment %}
+
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+  <script>
+  {% comment %} $( function() {
+    $( "#draggable" ).draggable().addClass('draggable');
+    
+    $( "#droppable" ).droppable({
+      drop: function( event, ui ) {
+        $( this )
+          .addClass( "ui-state-highlight" )
+          .find( "p" )
+            .html( "Dropped!" );
+      $( "#draggable" ).draggable("destroy");
+      $( "#draggable" ).removeClass("draggable")
+      $( "#draggable" ).resizable({ grid: [1, 10000] });
+      }
+    });
+  } );
+  </script> {% endcomment %}
+
+  $( function() {
+    $( "#draggable" ).draggable(    {
+        helper: "clone",
+        cursor: "move",
+        {% comment %} revert: true {% endcomment %}
+    });   
+
+    $( "#droppable" ).droppable({
+      out: function (event, ui) {
+          var self = ui;
+          ui.helper.off('mouseup').on('mouseup', function () {
+              {% comment %} console.log($(this) + " " + self.draggable); {% endcomment %}
+              $(this).remove();
+              self.draggable.remove();
+          });
+        $( this )
+          .removeClass( "ui-state-highlight" )
+          .find( "p" )
+            .html( "Чисто пусто" );          
+      },
+      activeClass: "ui-state-default",
+      hoverClass: "ui-state-hover",
+      accept: ".objectDrag", 
+      drop: function (event, ui) {
+            $(this).html(ui.draggable.clone(true).resizable({ 
+                  grid: [1, 10000] 
+              }).draggable({
+                  cursor: "move",
+              }).css({
+              position: 'relative',
+              top: 'auto',
+              left: 'auto'
+            })).appendTo(this)
+            
+      }           
+
+    });
+  } );
+  </script>
+
+  {% comment %} <script>
+  $( function() {
+    $( "#resizable" ).resizable("enable", { 
+      ghost: true
+      handles:'n,e,s,w,se'
+      grid: [1, 10000] });
+  } );
+  </script>   {% endcomment %}
+
+{% comment %} <script>
+  $("#main").resizable();
+ </script>  {% endcomment %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+
+{% endblock %}

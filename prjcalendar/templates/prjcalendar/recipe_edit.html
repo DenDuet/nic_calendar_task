@@ -1,0 +1,112 @@
+{% extends 'recipe/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <form class="row g-3 needs-validation" action="/recipe/edit/{{ recipe.id }}/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <div class="row">
+          <h4 class="h4 col-md-2 ur_edit">Изменить рецепт</h4>
+          <div class="col-md-1">
+            <a class="btn btn-secondary btn-md" href="/read_recipe/" role="button">Рецепты</a>
+          </div>
+          {% if user.is_authenticated and recipe.author == user %}
+          <div class="col-md-2">
+            <button class="btn btn-secondary ur_edit" type="submit">Сохранить изменения</button>
+          </div>
+          <div class="col-md-2">
+            <a class="btn btn-secondary btn-md" href="/recipe/delete/{{ recipe.id }}/" role="button">Удалить рецепт</a>
+          </div>
+         {% endif %}
+
+        </div>
+        <div class="row ur_edit">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Наименование</label>
+            <input type="text" class="form-control" name="name" id="name" value="{{ recipe.name }}" required />
+            <label for="make_time" class="form-label">Время приготовления</label>
+            <input type="text" class="form-control" name="make_time" id="make_time" value="{{ recipe.make_time }}" required />
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required>{{ recipe.description }}</textarea>
+            <label for="steps" class="form-label">Этапы приготовления"</label>
+            <textarea class="form-control" id="steps" name="steps" rows="4" required>{{ recipe.steps }}</textarea>
+            <label for="ingredients" class="form-label">Ингредиенты</label>
+            <textarea class="form-control" id="ingredients" name="ingredients" rows="4" required>{{ recipe.ingredients }}</textarea>
+            <div class="row">
+              <div class="col-md-3">
+                <label for="author" class="form-label">Автор</label>
+                <input type="text" class="form-control" name="author" id="author" value="{{ recipe.author.first_name }}" disabled/>
+              </div>
+              <div class="col-md-3">
+                <label for="add_date" class="form-label">Дата</label>
+                <input type="data" class="form-control" name="add_date" id="add_date" value="{{ recipe.add_date|date:'d.m.Y' }}" disabled/>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 ur_edit">
+            <div class="photo ur_edit" >
+              <img  src="{{ recipe.image }}" max-height='300px' width='80%' alt="картинка грузится..." />
+            </div>
+          {% if user.is_authenticated and recipe.author == user %}
+            <div class="col-md-6">
+              <label for="image" class="form-label">Обновить фото</label>
+              <input type="file" class="form-control input_button" id="image" name="image" >
+            </div>
+            {% endif %}
+            <div class="stage">
+              <label for="journal" class="form-label col-md-5">Категории</label>
+              {% if user.is_authenticated and recipe.author == user %}
+                <a class="btn btn-secondary btn-md col-md-4 ur_edit" href="/journal/create/{{ recipe.id }}/" role="button">Добавить категорию</a>
+             {% endif %}
+              <div>
+                <table id="myTable" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th >Категория</th>
+                      <th >Удалить</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for stage in journal %}
+                      {% if user.is_authenticated and recipe.author == user %}
+
+                        <tr class="clickable" onclick="window.location='/journal/edit/{{ recipe.id }}/{{ stage.category.id }}/'">
+                         <td>{{ stage.category.category_name }}</td>
+                         <td>
+                            <a type="button" class="btn btn-secondary col-md-6" href="/journal/delete/{{ stage.id }}/">Удалить</a>
+                         </td>
+                         </tr>
+                    {% else %}
+                         <tr>
+                            <td>{{ stage.category.category_name }}</td>
+                            <td>Нужно авторизоваться</td>
+                        </tr>
+                    {% endif %}
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <script>
+    {% comment %} let csrftoken = $("[name=csrfmiddlewaretoken]").val(); {% endcomment %}
+    let table = new DataTable('#myTable');
+
+</script>
+
+{% endblock %}

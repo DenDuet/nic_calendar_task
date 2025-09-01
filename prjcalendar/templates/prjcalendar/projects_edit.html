@@ -1,0 +1,144 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <form class="row g-3 needs-validation" action="/projects/edit/{{ project.id }}/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+          <h4 class="h4 col-md-5">Изменить проект</h4>
+          <div class="col-md-5">
+            <button class="btn btn-btn" id="loginSubmit" type="submit">Сохранить</button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label for="name_prj" class="form-label">Наименование проекта:</label>
+          <input type="text" class="form-control" maxlength="200" name="name_prj" id="name_prj" value="{{ project.name_prj }}" required />
+        </div>
+        <div class="col-md-1">
+          <label for="progress" class="form-label">Стадия:</label>
+          <select id="progress" class="form-control" name="progress" required>
+            <option  value="{{project.progress.name_progress}}">{{project.progress.name_progress}}</option>        
+              {% for org in progresses %}
+              <option value="{{org.name_progress}}"
+                  {% if org == current_org %} selected="selected" {% endif %}>
+                  {{org.name_progress|capfirst}}
+              </option>
+              {% endfor %}        
+           </select>    
+
+        </div>
+
+        <div class="col-md-4">
+          <label for="date_start" class="form-label">Дата начала:</label>
+          <input type="date" class="form-control" name="date_start" id="date_start"  value="{{ project.date_start|date:'Y-m-d' }}" required />
+        </div>
+        <div class="col-md-4">
+          <label for="date_finish" class="form-label">Дата окончания:</label>
+          <input type="date" class="form-control" name="date_finish" id="date_finish"  value="{{ project.date_finish|date:'Y-m-d' }}" required />
+        </div>
+
+        <div class="col-md-2">
+          <label for="sum_prj" class="form-label">Сумма:</label>
+          <input type="number"  step="any" min="0.01" max="999999999.99" class="form-control right" name="sum_prj" id="sum_prj" value="{{ project.sum_prj }}" required />
+        </div>
+     
+{% comment %} 
+        <div class="col-md-6">
+          <label for="contact_self" class="form-label">Контактное лицо:</label>
+          <input type="button" class="form-control input_button" name="contact_self_"  id="contact_self_" data-bs-toggle="collapse" data-bs-target="#contact" value="{{project.contact_self}}" required/>
+          <input type="text" class="form-control input_button" name="contact_self" id="contact_self" value="{{project.contact_self}}" hidden/>
+            <div id="contact" class="collapse" >
+              <table id="contactTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ФИО:</th>
+                    <th>Телефон:</th>
+                  </tr>
+                </thead>
+    
+                  {% for order in staff %}
+                    <tr>
+                      <td>{{ order }}</td>
+                      <td>{{ order.phone }}</td>
+                    </tr>
+                  {% endfor %}
+    
+              </table>
+            </div>          
+        </div> {% endcomment %}
+        <div class="col-md-6">
+          <label for="contrur" class="form-label">Наименование заказчика:</label>
+          <input type="button" class="form-control input_button" name="customer_id"  id="customer_id" data-bs-toggle="collapse" data-bs-target="#customer" value="{{project.contact_customer.name_firm}}" required/>
+          <input type="text" class="form-control input_button" name="customerID" id="customerID" value="{{project.contact_customer.name_firm}}" hidden/>
+            <div id="customer" class="collapse" >
+              <table id="customerIDTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Наименование</th>
+                    <th>Контактное лицо</th>
+                    <th>Телефон</th>
+                  </tr>
+                </thead>
+    
+                  {% for order in customer %}
+                    <tr>
+                      <td>{{ order.name_firm }}</td>
+                      <td>{{ order.name_contact }}</td>
+                      <td>{{ order.phone }}</td>
+                    </tr>
+                  {% endfor %}
+    
+              </table>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="col-md-12">
+          <label for="comments" class="form-label">Комментарий:</label>
+          <input type="textarea" class="form-control" name="comments" id="comments" value="{{ project.comments }}" />
+        </div>
+
+
+      </form>
+    </div>
+
+
+  </div>
+
+
+  <script>
+{% load static %} 
+    let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    {% comment %} let table2 = new DataTable('#myTable'); {% endcomment %}
+
+    let table = new DataTable('#customerIDTable', {
+                language: {
+              url: "{% static 'css/ru.css' %}"
+          },     
+
+    });
+    table.on('click', 'tbody tr', function () {
+            let data = table.row(this).data();
+            customer_id.value = data[0];
+            customerID.value = data[0];
+            document.getElementById('customer').className = 'collapse';
+    })
+
+
+
+
+
+</script> 
+
+
+
+{% endblock %}

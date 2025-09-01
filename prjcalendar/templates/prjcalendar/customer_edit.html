@@ -1,0 +1,53 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <form class="row g-3 needs-validation" action="/customer/edit/{{ customer.id }}/" method="post">
+    {% csrf_token %}
+    <h4 class="h4 col-md-5">Изменить данные сотрудника</h4>
+    <div class="col-md-3">
+      <button class="btn btn-btn" type="submit">Изменить данные сотрудника</button>
+    </div>      
+    {% comment %} <div class="input">
+      <div class="row"> {% endcomment %}
+        <div class="col-md-12">
+          <label for="name_firm" class="form-label">Фирма</label>
+          <input type="text" class="form-control" maxlength="100" id='name_firm' name="name_firm" value="{{ customer.name_firm }}" required/>
+        </div>
+        <div class="col-md-12">
+          <label for="name_contact" class="form-label">Контактное лицо</label>
+          <input type="text" class="form-control" maxlength="100" id='name_contact' name="name_contact" value="{{ customer.name_contact }}" />
+        </div>
+
+      {% comment %} </div>
+      <div class="row"> {% endcomment %}
+
+        <div class="col-md-6">
+          <label for="phone" class="form-label">Телефон</label>
+          <input type="text" class="form-control" id='phone' maxlength="30" name="phone" value="{{ customer.phone }}" required/>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Электронная почта</label>
+          <input type="text" class="form-control" maxlength="100" id='email' name="email" value="{{ customer.email }}" />
+        </div>
+      {% comment %} </div> {% endcomment %}
+    {% comment %} </div> {% endcomment %}
+
+         <div class="col-md-12">
+          <label for="comments" class="form-label">Комментарий</label>
+          <input type="text" class="form-control" maxlength="100" id='comments' name="comments" value="{{ customer.comments }}" />
+        </div>
+
+    {% comment %} <div class="col-12">
+      <button class="btn btn-primary" type="submit">Изменить данные сотрудника</button>
+    </div> {% endcomment %}
+  </form>
+
+
+
+{% endblock %}

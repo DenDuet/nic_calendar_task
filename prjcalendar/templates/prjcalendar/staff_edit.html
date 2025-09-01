@@ -1,0 +1,73 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <form class="row g-3 needs-validation" action="/staff/edit/{{ staff.id }}/" method="post">
+    {% csrf_token %}
+    <h4 class="h4 col-md-5">Изменить данные сотрудника</h4>
+    <div class="col-md-3">
+      <button class="btn btn-btn" type="submit">Изменить данные сотрудника</button>
+    </div>      
+    <div class="input">
+      <div class="row">
+        <div class="col-md-4">
+          <label for="name_first" class="form-label">Имя</label>
+          <input type="text" class="form-control" maxlength="30" id='name_first' name="name_first" value="{{ staff.name_first }}" required/>
+        </div>
+        <div class="col-md-4">
+          <label for="name_second" class="form-label">Отчество</label>
+          <input type="text" class="form-control" maxlength="30" id='name_second' name="name_second" value="{{ staff.name_second }}" />
+        </div>
+        <div class="col-md-4">
+          <label for="name_family" class="form-label">Фамилия</label>
+          <input type="text" class="form-control" maxlength="30" id='name_family' name="name_family" value="{{ staff.name_family }}" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="roleID" class="form-label">Должность</label>
+          <select id="roleID" class="form-control" name="roleID" value="{{ staff.roleID.name_staffrole }}" >
+            <option  value="{{ org.name_staffrole }}">{{staff.roleID.name_staffrole}}</option>        
+              {% for org in roles %}
+              <option value="{{org.name_staffrole }}"
+                  {% if org == current_org %}selected="selected"{% endif %}>
+                  {{org.name_staffrole }}
+              </option>
+              {% endfor %}        
+          </select>          
+
+        </div>
+   
+         
+        <div class="col-md-4">
+          <label for="phone" class="form-label">Телефон</label>
+          <input type="text" class="form-control" maxlength="30" id='phone' name="phone" value="{{ staff.phone }}" required/>
+        </div>
+        <div class="col-md-4">
+          <label for="email" class="form-label">Электронная почта</label>
+          <input type="text" class="form-control" maxlength="100" id='email' name="email" value="{{ staff.email }}" />
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+    <script>
+        let table = new DataTable('#table');
+        table.on('click', 'tbody tr', function () {
+                let data = table.row(this).data();
+                firm_.value = data[0];
+                firmID.value = data[0];
+
+                document.getElementById('firm').className = 'collapse';
+        })
+
+        </script>  
+
+{% endblock %}

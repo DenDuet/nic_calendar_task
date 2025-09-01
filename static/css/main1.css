@@ -1,0 +1,217 @@
+﻿@font-face {
+  font-family: "Roobert";
+  /* src: url('../fonts/Roobert_TRIAL.ttf') format("truetype"); */
+}
+
+.container-fluid {
+  margin: 0 30px 0 30px;
+}
+
+.about {
+  width: 310px;
+  height: 30px;
+  top: 28px;
+  left: 48px;
+  gap: 0px;
+  opacity: 0px;
+  /* angle: 0 deg; */
+  font-family: "Roobert";
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 30px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;  
+  color: #1A1A1A;
+
+}
+
+.btn {
+  /* font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;  */
+  font-size: 0.9em;
+  background-color: #FC7557!important;
+  /* background-color: #666667; */
+  color: #1A1A1A;  
+  /* border: 0.1px solid #1c77fd!important; */
+
+}
+
+.dropdown-menu{
+  background-color: #FC7557!important;
+  color: #f5f5f5!important;
+  left: -83px!important;
+}
+
+/* .btn-secondary:hover, .btn-primary:hover {
+  background-color: #3a89ff!important;
+  color: #f5f6fa!important;
+} */
+
+.navbar-right {
+  /* align-content: right; */
+  /* background-color: #0d6efd!important; */
+  position: absolute;
+  /* left: 1202px; */
+  /* right: 40px; */
+}
+
+
+.bg-primary {
+  /* background-color: lightgreen; */
+  width: 100%;
+  height: 90px;
+  gap: 0px;
+  border: 0px 0px 3px 0px;
+  opacity: 0px;
+  /* background-color: #FC7557 !important; */
+  --bs-bg-opacity: 1;
+  /* background-color: #FC7557 !important; */
+  /* --bs-navbar-color: #FC7557 !important; */
+  /* background-color: #FC7557 rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important; */
+  border-bottom: 3px solid #000000!important;
+  position: absolute;
+
+} 
+
+.btn-self {
+  width: 200px;
+  height: 50px;
+  position: relative;
+  left: 1310px;
+  top: 18px;
+  padding: 16px 32px 16px 32px;
+  gap: 10px;
+  border-radius: 30px 30px 30px 30px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  background-color: #FC7557;
+  color:#000102;
+  border: 1px solid #1A1A1A;
+  /* box-shadow: 5px 4px 0px 0px #000000; */
+}
+
+.btn-edit {
+  width: 165px;
+  left: 1310px;
+}
+
+.btn-add {
+  width: 227px;
+  left: 1492px;
+}
+
+.btn-log {
+  width: 136px;
+  left: 1736px;
+  background-color: #FFFFFF;
+
+}
+
+
+
+body {
+  display: flex;
+  background-color: #FFFFFF;
+  width:95vw;
+  /* height:90vh;   */
+  /* margin:50px 50px; */
+  --bs-body-font-size: 1em;
+  --bs-body-line-height: 1.1em;    
+  padding:0;
+  /* background: #476cd1; */
+  /* color: #333333; */
+  line-height: 1.33337;
+  font-weight: 400;
+  margin-top: 6rem;
+  /* margin: 6rem auto 0 auto;   */
+  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif; 
+  letter-spacing: -.01em;  
+  /* background-color: #f4f5fa; */
+  color: #0b102c;
+  overflow-x: hidden;
+  flex-direction: column;  
+  align-items: stretch;
+
+}
+
+@media (max-width: 767px) {
+  /* Цвет пунктов меню в раскрывающихся списках */
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+  /* Цвет и фон пункта меню в раскрывающихся списках, при поднесении к нему курсора мышки или при нахождении его в фокусе */
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #333;
+        background-color: transparent;
+    }
+  }
+
+  /* ____________________________________________________________________ */
+
+  @media (min-width : 768px) and (max-width : 1024px)
+{
+
+
+.navbar-right {
+  /* align-content: right; */
+  /* background-color: #0d6efd!important; */
+  position: absolute;
+  /* left: 1202px; */
+  right: 40px;
+  /* top: 163px; */
+}
+
+  .btn-self {
+    /* width: 200px; */
+    font-weight: 400;
+    height: 30px;
+    /* left: 1310px; */
+    top: 0px;
+    padding: 0px 0px 0px 0px;
+    /* gap: 10px; */
+    border-radius: 30px 30px 30px 30px;
+    border: 0px 0px 0px 0px;
+    opacity: 0px;
+    background: #FC7557;
+    border: 0px solid #1A1A1A;
+    box-shadow: 0px 0px 0px 0px #000000;
+    /* position: static; */
+    /* position: absolute; */
+    color: #1b1b1b;
+  }
+
+  .bg-primary {
+    border: 1px solid #1A1A1A;
+    /* box-shadow: 5px 4px 0px 0px #000000; */
+    background-color: #FC7557 !important;
+    /* position: static; */
+  }  
+  .navbar-nav {
+    border: 1px solid #1A1A1A;
+    background-color: #FC7557 !important;
+    padding: 15px;
+  }
+
+  /* .btn-btn {
+    font-weight: 400;
+    height: 30px;
+    padding: 0px 0px 0px 0px;
+    border-radius: 30px 30px 30px 30px;
+    opacity: 0px;
+    background: #FC7557;
+    border: 0px solid #1A1A1A;
+    box-shadow: 0px 0px 0px 0px #000000;
+    color: #1b1b1b;
+} */
+
+}
+
+/* @media (min-width: 1024px)
+{
+
+  .navbar-collapse.collapse {  
+    display: none!important;  
+    }   
+
+} */

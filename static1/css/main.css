@@ -1,0 +1,197 @@
+﻿@font-face {
+  font-family: "Roobert";
+  /* src: url('../fonts/Roobert_TRIAL.ttf') format("truetype"); */
+}
+
+.container-fluid {
+  margin: 0 30px 0 30px;
+}
+
+.about {
+  width: 310px;
+  height: 30px;
+  top: 28px;
+  left: 48px;
+  gap: 0px;
+  opacity: 0px;
+  /* angle: 0 deg; */
+  font-family: "Roobert";
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 30px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;  
+  color: #1A1A1A;
+
+}
+
+
+/* 
+:root,
+[data-bs-theme=light] {
+
+  --bs-font-sans-serif: system-ui, -apple-system, "Roobert", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: 1rem;
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 1.5;
+  --bs-body-color: #212529;
+  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-bg: #fff;
+  --bs-body-bg-rgb: 255, 255, 255;  
+  --bs-tertiary-color: #0e0604;
+  --bs-tertiary-color-rgb: 33, 37, 41;
+  --bs-tertiary-bg: #FC7557;
+  --bs-tertiary-bg-rgb: 248, 249, 250;
+
+
+  /* --navbar-padding-x: ; */
+  /* --navbar-padding-y: #{$navbar-padding-y}; */
+  /* --navbar-color: #FC7557; */
+  /* --#{$prefix}navbar-hover-color: #{$navbar-light-hover-color};
+  --#{$prefix}navbar-disabled-color: #{$navbar-light-disabled-color};
+  --#{$prefix}navbar-active-color: #{$navbar-light-active-color};
+  --#{$prefix}navbar-brand-padding-y: #{$navbar-brand-padding-y};
+  --#{$prefix}navbar-brand-margin-end: #{$navbar-brand-margin-end};
+  --#{$prefix}navbar-brand-font-size: #{$navbar-brand-font-size};
+  --#{$prefix}navbar-brand-color: #{$navbar-light-brand-color};
+  --#{$prefix}navbar-brand-hover-color: #{$navbar-light-brand-hover-color};
+  --#{$prefix}navbar-nav-link-padding-x: #{$navbar-nav-link-padding-x};
+  --#{$prefix}navbar-toggler-padding-y: #{$navbar-toggler-padding-y};
+  --#{$prefix}navbar-toggler-padding-x: #{$navbar-toggler-padding-x};
+  --#{$prefix}navbar-toggler-font-size: #{$navbar-toggler-font-size};
+  --#{$prefix}navbar-toggler-icon-bg: #{escape-svg($navbar-light-toggler-icon-bg)};
+  --#{$prefix}navbar-toggler-border-color: #{$navbar-light-toggler-border-color};
+  --#{$prefix}navbar-toggler-border-radius: #{$navbar-toggler-border-radius};
+  --#{$prefix}navbar-toggler-focus-width: #{$navbar-toggler-focus-width};
+  --#{$prefix}navbar-toggler-transition: #{$navbar-toggler-transition};   */
+  /* }  */
+
+
+.btn {
+  /* font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;  */
+  font-size: 0.9em;
+  background-color: #FC7557!important;
+  /* background-color: #666667; */
+  color: #1A1A1A;  
+  /* border: 0.1px solid #1c77fd!important; */
+
+}
+/* .btn:hover {
+  border: 0.1px solid #3a89ff!important;
+}
+
+.btn-secondary, .btn-primary {
+  background-color: #1c77fd!important;
+  color: #f5f5f5!important;
+} */
+
+.dropdown-menu{
+  background-color: #FC7557!important;
+  color: #f5f5f5!important;
+  left: -83px!important;
+}
+
+/* .btn-secondary:hover, .btn-primary:hover {
+  background-color: #3a89ff!important;
+  color: #f5f6fa!important;
+} */
+
+.navbar-right {
+  /* align-content: right; */
+  /* background-color: #0d6efd!important; */
+  position: absolute;
+  /* left: 1202px; */
+  /* right: 40px; */
+}
+
+
+.bg-primary {
+  /* background-color: lightgreen; */
+  width: 100%;
+  height: 90px;
+  gap: 0px;
+  border: 0px 0px 3px 0px;
+  opacity: 0px;
+  /* background-color: #FC7557 !important; */
+  --bs-bg-opacity: 1;
+  /* background-color: #FC7557 !important; */
+  /* --bs-navbar-color: #FC7557 !important; */
+  /* background-color: #FC7557 rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important; */
+  border-bottom: 3px solid #000000!important;
+  position: absolute;
+
+} 
+
+.btn-self {
+  width: 200px;
+  height: 50px;
+  position: relative;
+  left: 1310px;
+  top: 18px;
+  padding: 16px 32px 16px 32px;
+  gap: 10px;
+  border-radius: 30px 30px 30px 30px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  background-color: #FC7557;
+  color:#000102;
+  border: 1px solid #1A1A1A;
+  /* box-shadow: 5px 4px 0px 0px #000000; */
+}
+
+.btn-edit {
+  width: 165px;
+  left: 1310px;
+}
+
+.btn-add {
+  width: 227px;
+  left: 1492px;
+}
+
+.btn-log {
+  width: 136px;
+  left: 1736px;
+  background-color: #FFFFFF;
+
+}
+
+
+
+body {
+  background-color: #FFFFFF;
+  width:95vw;
+  /* height:90vh;   */
+  /* margin:50px 50px; */
+  --bs-body-font-size: 1em;
+  --bs-body-line-height: 1.1em;    
+  padding:0;
+  /* background: #476cd1; */
+  /* color: #333333; */
+  line-height: 1.33337;
+  font-weight: 400;
+  margin-top: 6rem;
+  /* margin: 6rem auto 0 auto;   */
+  font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif; 
+  letter-spacing: -.01em;  
+  /* background-color: #f4f5fa; */
+  color: #0b102c;
+  
+}
+
+@media (max-width: 767px) {
+  /* Цвет пунктов меню в раскрывающихся списках */
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+  /* Цвет и фон пункта меню в раскрывающихся списках, при поднесении к нему курсора мышки или при нахождении его в фокусе */
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #333;
+        background-color: transparent;
+    }
+  }

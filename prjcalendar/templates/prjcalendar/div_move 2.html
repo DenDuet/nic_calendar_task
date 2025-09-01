@@ -1,0 +1,219 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+  {% comment %} <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/resources/demos/style.css">   {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {% endcomment %}
+
+{% comment %} <meta name="viewport" content="width=device-width, initial-scale=1">   {% endcomment %}
+{% endblock %}
+
+{% block content %}
+
+
+  <title>jQuery UI Draggable + Sortable</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  li { list-style-type: none; margin: 0; padding: 0; margin-bottom: 10px; }
+  li { margin: 5px; padding: 5px; width: 150px; }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+
+  <script>
+  $( function() {
+
+    $( ".sortable_too" ).sortable({
+      revert: true
+    });	
+    $( ".draggable" ).draggable({
+      connectToSortable: ".sortable_too",
+      helper: "clone",
+      revert: "invalid",
+    
+    });
+    $(".resizable").resizable({
+      grid: [165, 39],
+      drag: function(event, ui){
+        $('input[name="x"]').val(ui.position.left);
+        $('input[name="y"]').val(ui.position.top);
+      }        
+    });
+    {% comment %} $( "li, li, li" ).disableSelection(); {% endcomment %}
+
+
+	$(".draggable").mousedown(function( e ){ 
+		console.log(e.target.id); 
+		let clone = $(e.target.id).clone();
+		clone.draggable({
+      			connectToSortable: ".sortable_too",
+				axis: "x,y",
+				animate: true,
+				grid: [ 102,91],
+				containment:'.day',
+				scroll:true,
+				revert: "valid",
+				refreshPositions: true,
+				start: function(event,ui) {
+				},
+				stop: function(event,ui) {
+
+				}
+			});
+		clone.removeClass("draggable");
+		clone.resizable();
+		});
+
+	$(".day").droppable({
+				tolerance: "touch",
+				accept: ".draggable",
+				drop: function(event,ui) {
+					console.log("сброс - ", event.target.id);
+					$(event.target.id).css({'height':'100px'})
+				},
+			});
+	
+
+  });
+
+ 
+  </script>
+
+<div class="row">
+<div class="col-md-2 left">
+<ul>
+  <li id="1" class="draggable ui-state-highlight">Проект 1</li>
+  <li id="2" class="draggable ui-state-highlight">Проект 2</li>
+  <li id="3" class="draggable ui-state-highlight">Проект 3</li>
+  <li id="4" class="draggable ui-state-highlight">Проект 4</li>
+</ul>
+ </div>
+
+
+<div class="col-md-10 right">
+<div class="row">
+	<div id="staff1" class="staff1" style="width: 200px; height: 50px;">
+	Роза Львовна
+	</div>
+	<div id="field0105" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>
+ 	<div id="field0205" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>
+	<div id="field0305" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0405" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0505" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0605" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0705" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0805" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0905" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field1005" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+</div>
+<div class="row">
+	<div id="staff2" class="staff" style="width: 200px; height: 50px;">
+	Иван Иваныч
+	</div>
+	<div id="field0106" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>
+ 	<div id="field0206" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>
+	<div id="field0306" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0406" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0506" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0606" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0706" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0806" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field0906" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+	<div id="field1006" class="calendar day" style="width: 200px; height: 50px;">
+		<li class="sortable_too">
+		</li>
+	</div>	
+</div>
+</div>
+
+
+ 
+
+<form class="form form-inline" action="" method="post" target="_blank">
+	<div class="form-row">
+		<div class="col">
+			<div class="input-group input-group-sm">
+				<input type="text" class="form-control form-control-sm" name="x" placehlider="x">
+				<div class="input-group-append">
+					<span class="input-group-text">px</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col">
+			<div class="input-group input-group-sm">
+				<input type="text" class="form-control form-control-sm" name="y" placehlider="y">
+				<div class="input-group-append">
+					<span class="input-group-text">px</span>
+				</div>
+			</div>
+		</div>
+
+	</div>	
+</form>	
+
+
+
+{% endblock %}

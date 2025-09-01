@@ -1,0 +1,197 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class = "col-md-6 ">
+      <h4 class="h4 col-md-9">{{ title }}</h4>
+      <a class="btn btn-btn btn-md col-md-5" href="{% url 'add projects to base' %}" role="button">Создать проект</a>    
+
+    </div>
+
+    <div class = "col-md-6 bordered1"> 
+      <form class="row " action="/read_projects/" method="post">
+      {% csrf_token %}
+
+        <div class="col-md-4">
+          <label for="date_start" class="form-label">Дата начала:</label>
+          <input type="date" class="form-control" id='date_start' name="date_start" value="{{date_start|date:'Y-m-d'}}" />
+        </div>
+        <div class="col-md-4">
+          <label for="date_finish" class="form-label">Дата окончания:</label>
+          <input type="date" class="form-control" id='date_finish' name="date_finish" value="{{date_finish|date:'Y-m-d'}}" />
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-btn ur_edit" type="submit" id="exit">Изменить даты</button>
+        </div>                    
+      </form>
+    </div>   
+
+      <table id="prjTable" class="table table-bordered table-hover">   
+      <thead>   
+        <tr>
+          <th>Наименование:</th>
+          <th>Дата начала:</th>          
+          <th>Дата окончания:</th>          
+          <th>Заказчик:</th>
+          <th>Контактное лицо:</th>
+          <th>Сумма:</th>
+          <th>Комментарий:</th>
+          <th>Стадия:</th>
+        </tr>
+      </thead>
+        {% for order in projects %}
+          <tr  class="clickable" onclick="window.location='/projects/edit/{{ order.id }}/'">
+            <td>{{ order.name_prj }}</td>
+            <td>{{ order.date_start }}</td>
+            <td>{{ order.date_finish }}</td>
+            {% comment %} |date:"d.m.Y" {% endcomment %}
+            <td>{{ order.contact_customer.name_firm }}</td>               
+            <td>{{ order.contact_customer.name_contact }}</td>               
+            <td class="right">{{ order.sum_prj}}</td>
+            <td>{{ order.comments }}</td>
+            <td class="center">
+              {% if order.progress.name_progress == "Завершен" %}
+                <p class="tbl_ok">{{ order.progress.name_progress }}</p>
+              {% else %}
+                <p>{{ order.progress.name_progress }}</p>
+              {% endif %} 
+            </td>            
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+
+    <script>
+
+
+    var footerStr = "0";
+{% load static %} 
+
+    $( document ).ready(function() {
+      var table = $('#prjTable').DataTable({
+          language: {
+              url: "{% static 'css/ru.css' %}"
+          },             
+          "footerCallback": footerCallback, 
+          "aaSorting": [[ 0, "asc" ]],
+          {% comment %} responsive: true, {% endcomment %}
+          paging: false,
+          scrollCollapse: true,
+          scrollY: '55vh',  
+          columnDefs: [
+              {
+                  target: 1,2
+                  render: DataTable.render.date()
+              }
+          ],               
+          {% comment %} buttons: button, {% endcomment %}
+          buttons: [
+            {
+                extend: 'copy',
+                text: '<i class="btn-primary"></i> Copy',
+                className: 'btn-primary',
+                {% comment %} customize: function(doc)
+                    {
+                        doc.defaultStyle.fontSize = 7; 
+                        doc.styles.tableHeader.fontSize = 7;
+                        doc.styles.tableHeader.fillColor = '#B8B8B8';
+                    }                     {% endcomment %}
+            },
+            {
+                extend: 'print',
+                {% comment %} text: '<i class="fas fa-file-csv"></i> CSV', {% endcomment %}
+                className: 'btn btn-primary',
+            },
+            {
+                extend: 'excelHtml5',
+                {% comment %} text: '<i class="fas fa-file-excel"></i> Excel', {% endcomment %}
+                className: 'btn btn-primary',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                header: true,
+                customize: function(doc)
+                    {
+                    }   
+                                   
+            },
+            {
+                extend: 'pdfHtml5',
+                {% comment %} text:'<i class="fas fa-file-pdf"></i> PDF', {% endcomment %}
+                className: 'btn btn-primary',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                header: true,
+                customize: function(doc)
+                    {
+                        doc.defaultStyle.fontSize = 10; //<-- set fontsize to 16 instead of 10
+                        doc.styles.tableHeader.fontSize = 10;
+                        doc.styles.tableHeader.fillColor = '#B8B8B8';
+                    }                  
+            }
+        ],
+
+          layout: {
+              bottomStart: 'buttons',
+              bottomEnd: {
+                div: {
+                      text: footerStr,
+                      id: 'dynamic'
+                  }
+                  }
+          },      
+      });
+
+        });
+
+window.addEventListener('load', function () {
+        const element = document.getElementById('dt-search-0')
+
+        element.focus({
+          preventScroll: true
+        });   
+})
+
+    function footerCallback(row, data, start, end, display) {
+          var api = this.api();
+        
+          // Remove the formatting to get integer data for summation
+          var intVal = function(i) {
+
+            return (typeof i === 'string') ? i.replace(/\s+/g, '') * 1 :
+                                            (typeof i === 'number') ? i : 0;
+          };
+
+          var sumFn = function(a, b) { return intVal(a) + intVal(b); }
+          // Total over all pages
+          var total = api.column(4).data().reduce(sumFn, 0);
+          var table_length = api.column(4).data().count();
+          var lengthOpts = { search: 'applied' };
+          var length = api.column(4, lengthOpts).data().length;
+
+          // Total over all filtered pages
+          if (length) {
+            pageTotal = api.column(4, lengthOpts).data().reduce(sumFn);
+          } else {
+            pageTotal = 0;
+          }
+
+          footerStr = 'Документов выведено ' + length + " на сумму: " 
+                        + Intl.NumberFormat('ru-RU').format((Math.round(pageTotal * 100) / 100).toFixed(2))
+                        + ' рублей (Всего документов '
+                        + table_length + " на сумму: "
+                        + Intl.NumberFormat('ru-RU').format((Math.round(total * 100) / 100).toFixed(2)) 
+                        + ' рублей)';
+          document.getElementById('dynamic').innerHTML  = footerStr;
+          
+      }
+
+
+    </script>
+
+
+{% endblock %}

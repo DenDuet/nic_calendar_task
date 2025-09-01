@@ -1,0 +1,51 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+
+  <form class="row g-3 needs-validation" action="" method="post">
+    {% csrf_token %}
+    <h4 class="h4 col-md-5">Добавить заказчика в справочник</h4>
+    <div class="col-md-3">
+      <button class="btn btn-btn" type="submit">Добавить заказчика</button>
+    </div>        
+    {% comment %} <div class="input"> {% endcomment %}
+      {% comment %} <div class="row"> {% endcomment %}
+        <div class="col-md-12">
+          <label for="name_firm" class="form-label">Фирма</label>
+          <input type="text" class="form-control" maxlength="100" id='name_firm' name="name_firm" placeholder="Фирма" required/>
+        </div>
+        <div class="col-md-12">
+          <label for="name_contact" class="form-label">Контактное лицо</label>
+          <input type="text" class="form-control" maxlength="100" id='name_contact' name="name_contact" placeholder="Контактное лицо" />
+        </div>
+
+      {% comment %} </div> {% endcomment %}
+
+      {% comment %} <div class="row"> {% endcomment %}
+        
+        <div class="col-md-6">
+          <label for="phone" class="form-label">Телефон</label>
+          <input type="text" class="form-control" maxlength="30" id='phone' name="phone" placeholder="Телефон" required/>
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label">Электронная почта</label>
+          <input type="text" class="form-control" maxlength="100" id='email' name="email" placeholder="Электронная почта" />
+        </div>
+      {% comment %} </div> {% endcomment %}
+         <div class="col-md-12">
+          <label for="comments" class="form-label">Комментарий</label>
+          <input type="text" class="form-control" maxlength="100" id='comments' name="comments" placeholder="Комментарий" />
+        </div>
+
+    {% comment %} </div> {% endcomment %}
+
+
+  </form>
+
+
+
+{% endblock %}

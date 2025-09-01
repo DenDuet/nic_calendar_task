@@ -1,0 +1,43 @@
+{% extends 'recipe/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <form class="row g-3 needs-validation" action="/recipe/create/" method="post" enctype="multipart/form-data">
+        <input type="text" class="form-control" name="path_url" id="path_url" value="{{ path_url }}" hidden />
+        {% csrf_token %}
+
+        <div class="row">
+          <h4 class="h4 col-md-5 ur_edit">Новый рецепт</h4>
+          <div class="col-md-3">
+            <button class="btn btn-secondary ur_edit" type="submit">Сохранить</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Наименование</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Напишите название" required />
+            <label for="make_time" class="form-label">Время приготовления</label>
+            <input type="text" class="form-control" name="make_time" id="make_time" placeholder="Время приготовления" required />
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+            <label for="steps" class="form-label">Этапы приготовления"</label>
+            <textarea class="form-control" id="steps" name="steps" rows="4" required></textarea>
+            <label for="ingredients" class="form-label">Ингредиенты</label>
+            <textarea class="form-control" id="ingredients" name="ingredients" rows="4" required></textarea>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-2 ur_edit">
+              <label for="image" class="form-label">Загрузите фото</label>
+              <input type="file" class="form-control input_button" id="image" name="image" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

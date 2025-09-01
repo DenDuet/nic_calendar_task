@@ -1,0 +1,27 @@
+{% extends 'recipe/base.html' %}
+
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <form class="row g-3" action="/category/create/" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-12">
+        <label for="name_ul" class="form-label">Наименование</label>
+        <input type="text" class="form-control input_button" name="category_name" id="category_name" required />
+      </div>
+      <div class="col-md-6">
+        <label for="description" class="form-label">Описание</label>
+        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+      </div>
+    </div>
+
+    <div class="col-md-1">
+      <button class="btn btn-secondary ur_edit" type="submit">Сохранить</button>
+    </div>
+  </form>
+{% endblock %}

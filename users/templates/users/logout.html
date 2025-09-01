@@ -1,0 +1,12 @@
+{% extends 'prjcalendar/base.html' %}
+{% load crispy_forms_tags %}
+{% comment %} {% extends 'project/base.html' %} {% endcomment %}
+{% block content %}
+
+  <div class="container">
+    <h3 class="col-12 form-group border-bottom mb-4">Вы вышли из своей учетной записи</h3>
+    <div class="col-12 form-group">
+      <a href="{% url 'login' %}">Войти</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'prjcalendar/base.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <h4 class="h4 col-md-5">{{ title }}</h4>
+    <a class="btn btn-btn col-md-3" href="{% url 'add customer to base' %}" role="button">Добавить заказчика</a>
+    <div class="col-md-1"></div>
+    <table id="table" class="table table-bordered table-hover ">
+      <thead>
+        <tr>
+          <th>Фирма</th>
+          <th>Контактное лицо</th>
+          <th>Телефон</th>
+          <th>Емайл</th>
+          <th>Комментарии</th>
+
+        </tr>
+      </thead>
+
+        {% for ones in customer %}
+          <tr class="clickable" onclick="window.location='/customer/edit/{{ ones.id }}/'">
+            <td>{{ ones.name_firm }}</td>
+            <td>{{ ones.name_contact }}</td>
+            <td>{{ ones.phone }}</td>
+            <td>{{ ones.email }}</td>
+            <td>{{ ones.comments }}</td>
+          </tr>
+        {% endfor %}
+
+    </table>
+  </div>
+
+    <script>
+        {% comment %} let table = new DataTable('#table', {
+          paging: false,
+          scrollCollapse: true,
+          scrollY: '60vh'
+      }); {% endcomment %}
+{% load static %} 
+ 
+    $( document ).ready(function() {
+        var table = $('#table').DataTable({
+          language: {
+              url: "{% static 'css/ru.css' %}"
+          },                   
+          "aaSorting": [[ 0, "asc", ]],
+          paging: false,
+          scrollCollapse: true,
+          scrollY: '60vh',  
+            
+
+          buttons: [
+            {
+                extend: 'copy',
+                {% comment %} text: '<i class="btn-primary"></i> Copy', {% endcomment %}
+                className: 'btn-primary',
+            },
+            {
+                extend: 'print',
+                className: 'btn btn-primary',
+            },
+            {
+                extend: 'excelHtml5',
+                className: 'btn btn-primary',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                header: true,
+                                  
+            },
+            {
+                extend: 'pdfHtml5',
+                className: 'btn btn-primary',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                header: true,
+                customize: function(doc)
+                    {
+                        doc.defaultStyle.fontSize = 7; 
+                        doc.styles.tableHeader.fontSize = 7;
+                        doc.styles.tableHeader.fillColor = '#B8B8B8';
+                    }                  
+            }
+            ],
+
+              layout: {
+                  bottomStart: 'buttons',
+                  bottomEnd: 'info'
+              },      
+      });
+
+
+      });
+
+window.addEventListener('load', function () {
+        const element = document.getElementById('dt-search-0')
+
+        element.focus({
+          preventScroll: true
+        });   
+})
+
+      </script>
+
+{% endblock %}
