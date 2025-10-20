@@ -1,0 +1,34 @@
+# Совместимо с очень старыми версиями pip и Python (MySQL)
+Django==3.2.25
+asgiref==3.4.1
+sqlparse==0.4.4
+tzdata==2023.3
+
+# Database - MySQL
+mysqlclient==2.1.1
+
+# Forms and UI
+crispy-bootstrap5==2023.10
+django-crispy-forms==2.1
+
+# Media handling
+pillow==10.0.1
+
+# Authentication
+django-allauth==0.57.0
+
+# API
+djangorestframework==3.14.0
+
+# Utilities
+django-import-export==3.3.1
+python-dotenv==1.0.0
+django-filter==23.2
+django-ratelimit==3.0.1
+
+# Production server
+gunicorn==21.2.0
+
+# Security
+django-cors-headers==4.3.1
+whitenoise==6.5.0
