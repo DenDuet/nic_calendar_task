@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Тест API</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Тест API календаря</h1>
+    <button onclick="testLoadAPI()">Тест загрузки</button>
+    <button onclick="testSaveAPI()">Тест сохранения</button>
+    <div id="result"></div>
+
+    <script>
+        function testLoadAPI() {
+            console.log('Тестируем загрузку API...');
+            fetch('/api/load-calendar/')
+                .then(response => {
+                    console.log('Статус ответа:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Данные:', data);
+                    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    document.getElementById('result').innerHTML = 'Ошибка: ' + error.message;
+                });
+        }
+
+        function testSaveAPI() {
+            console.log('Тестируем сохранение API...');
+            const testData = {
+                tasks: [
+                    {
+                        id: 'task_test_1',
+                        name: 'Тестовая задача',
+                        staffId: 1,
+                        day: 1,
+                        duration: 1,
+                        color: '#ff0000'
+                    }
+                ]
+            };
+
+            fetch('/api/save-calendar/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                },
+                body: JSON.stringify(testData)
+            })
+            .then(response => {
+                console.log('Статус ответа:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Результат:', data);
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                document.getElementById('result').innerHTML = 'Ошибка: ' + error.message;
+            });
+        }
+    </script>
+</body>
+</html>

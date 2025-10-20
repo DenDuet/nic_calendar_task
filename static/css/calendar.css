@@ -1,0 +1,349 @@
+/* Стили для календаря задач */
+
+.calendar-container {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-table {
+  font-size: 12px;
+  border-collapse: separate;
+  border-spacing: 1px;
+}
+
+.staff-header, .day-header {
+  text-align: center;
+  vertical-align: middle;
+  min-width: 80px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.staff-cell {
+  width: 150px;
+  vertical-align: top;
+  background: #e9ecef;
+  border-right: 2px solid #dee2e6;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+
+/* Важно: ячейки календаря НЕ должны изменять размер */
+.calendar-cell {
+  height: 80px !important;
+  width: 80px !important;
+  overflow: visible !important;
+  position: relative;
+  background: white;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+  padding: 2px !important;
+  /* Фиксированные размеры - НЕ изменяются */
+  min-width: 80px !important;
+  max-width: 80px !important;
+  min-height: 80px !important;
+  max-height: 80px !important;
+  /* Важно: содержимое не влияет на размер */
+  box-sizing: border-box !important;
+  /* Убираем все отступы, которые могут сдвигать задачи */
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.calendar-cell:hover {
+  background: #f0f8ff;
+  border-color: #007bff;
+}
+
+/* Стили для задач */
+.task-item {
+  position: absolute;
+  display: block;
+  margin: 0 !important;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease, transform 0.1s ease;
+  z-index: 10;
+  /* Фиксированная высота для предотвращения изменения размера ячеек */
+  height: 30px !important;
+  /* Позиционирование относительно ячейки - всегда начинается с начала дня */
+  left: 0 !important;
+  top: 0 !important;
+  /* Важно: задачи могут выходить за границы ячеек */
+  max-width: none !important;
+  max-height: none !important;
+  /* Точное позиционирование */
+  transform-origin: left top;
+  /* Убеждаемся, что задачи начинаются с левого края */
+  box-sizing: border-box;
+}
+
+/* Предотвращение наложения задач - каждая следующая задача располагается ниже */
+.task-item:nth-child(2) { top: 32px !important; }
+.task-item:nth-child(3) { top: 64px !important; }
+.task-item:nth-child(4) { top: 96px !important; }
+.task-item:nth-child(5) { top: 128px !important; }
+
+/* Задачи могут выходить за границы ячеек */
+.cell-content {
+  overflow: visible !important;
+  position: relative;
+  height: 100% !important;
+  min-height: 60px;
+  border-radius: 4px;
+  padding: 0 !important;
+  margin: 0 !important;
+  /* Важно: содержимое не влияет на размер ячейки */
+  width: 100% !important;
+  height: 100% !important;
+  /* Важно: содержимое не влияет на размер */
+  box-sizing: border-box !important;
+}
+
+.task-list {
+  overflow: visible !important;
+  position: relative;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 20px;
+  width: 100% !important;
+  height: 100% !important;
+  /* Важно: содержимое не влияет на размер */
+  box-sizing: border-box !important;
+}
+
+/* Дополнительные стили для задач */
+.task-item:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.task-item.ui-draggable-dragging {
+  transform: rotate(5deg) scale(1.05);
+  opacity: 0.8;
+  z-index: 1000;
+}
+
+.task-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.task-remove {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.task-remove:hover {
+  background: #dc3545;
+  transform: scale(1.1);
+}
+
+/* Стили для перетаскивания */
+.calendar-cell.ui-droppable-hover {
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 2px dashed #28a745;
+}
+
+/* Стили для проектов */
+.project-item {
+  cursor: move;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.project-item:hover {
+  transform: translateX(5px);
+}
+
+.project-item.dragging {
+  opacity: 0.5;
+}
+
+/* Стили для корзины */
+.trash-zone {
+  border: 2px dashed #dc3545;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  color: #dc3545;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff5f5;
+  transition: all 0.3s ease;
+}
+
+.trash-zone:hover {
+  background: #ffe6e6;
+  border-color: #c82333;
+}
+
+.trash-zone.ui-droppable-hover {
+  background: #f8d7da;
+  border-color: #dc3545;
+  transform: scale(1.05);
+}
+
+/* Стили для проектов с цветами */
+.project-card {
+  border-radius: 8px;
+  padding: 12px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.project-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+}
+
+.project-header {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-color-indicator {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+.project-dates {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.project-customer {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.project-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.project-actions .btn {
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+}
+
+/* Стили для модального окна выбора цвета */
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.color-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-btn:hover {
+  border-color: #007bff;
+  transform: scale(1.1);
+}
+
+.color-btn.active {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+/* Стили для панели управления календарем */
+.calendar-controls {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  margin-bottom: 20px;
+}
+
+.calendar-controls .btn-group {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* Стили для отладочной информации */
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .calendar-table {
+    font-size: 10px;
+  }
+  
+  .staff-cell {
+    width: 120px;
+  }
+  
+  .calendar-cell {
+    min-width: 60px !important;
+    max-width: 60px !important;
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
+  
+  .task-item {
+    font-size: 9px;
+    padding: 2px 4px;
+  }
+}

@@ -4,6 +4,7 @@
     {% load static %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>{{title}}</title>
     {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> {% endcomment %}
 
@@ -15,11 +16,14 @@
     <link href="{% static 'css/jquery.dataTables.min.css'%}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> 
     <link href="{% static 'css/main.css' %}" rel="stylesheet">     
+    <link href="{% static 'css/calendar.css' %}" rel="stylesheet">
+    <link href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="{% static 'js/jquery-3.7.0.js' %}"></script> 
     <script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
     <script src="{% static 'js/popper.min.js' %}"></script> 
     <script src="{% static 'js/bootstrap.min.js' %}"></script> 
-    <script src="{% static 'js/DragManager.js' %}"></script> 
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script> 
 
   </head>
   <body>
@@ -28,7 +32,7 @@
       <nav class="navbar navbar-expand-sm bg-primary fixed-top">
       {% comment %} <div class="container-fluid"> {% endcomment %}
         <div  class="navbar-nav ml-auto mb-2 mb-lg-0">
-          <a class="navbar-brand nav-link about" aria-current="page" href="/edit/">WeTrio Project Tracker</a>
+          <a class="navbar-brand nav-link about" aria-current="page" href="/calendar/">WeTrio Project Tracker</a>
         </div>       
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -149,6 +153,8 @@
     <script src="{% static 'js/datatables.min.js' %}"></script> 
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+  {% block extra_js %}{% endblock %}
 
   </body>
   </div>

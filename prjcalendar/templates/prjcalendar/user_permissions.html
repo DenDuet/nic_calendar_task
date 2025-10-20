@@ -1,0 +1,178 @@
+{% extends 'prjcalendar/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Права пользователя: {{ user.username }}</h2>
+            
+            {% if user_permissions %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Информация о правах доступа</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Группа: {{ user_permissions.group|default:"Не назначена" }}</h6>
+                                
+                                <h6 class="mt-3">Права на проекты:</h6>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i class="{% if user_permissions.can_view_projects %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Просмотр проектов
+                                    </li>
+                                    <li>
+                                        <i class="{% if user_permissions.can_edit_projects %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Редактирование проектов
+                                    </li>
+                                    <li>
+                                        <i class="{% if user_permissions.can_delete_projects %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Удаление проектов
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h6>Права на сотрудников:</h6>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i class="{% if user_permissions.can_view_staff %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Просмотр сотрудников
+                                    </li>
+                                    <li>
+                                        <i class="{% if user_permissions.can_edit_staff %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Редактирование сотрудников
+                                    </li>
+                                </ul>
+                                
+                                <h6 class="mt-3">Права на заказчиков:</h6>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i class="{% if user_permissions.can_view_customers %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Просмотр заказчиков
+                                    </li>
+                                    <li>
+                                        <i class="{% if user_permissions.can_edit_customers %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Редактирование заказчиков
+                                    </li>
+                                </ul>
+                                
+                                <h6 class="mt-3">Дополнительные права:</h6>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <i class="{% if user_permissions.can_manage_users %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Управление пользователями
+                                    </li>
+                                    <li>
+                                        <i class="{% if user_permissions.can_view_reports %}fas fa-check text-success{% else %}fas fa-times text-danger{% endif %}"></i>
+                                        Просмотр отчетов
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if accessible_projects %}
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h5>Доступные проекты ({{ accessible_projects.count }})</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Название проекта</th>
+                                            <th>Дата начала</th>
+                                            <th>Дата окончания</th>
+                                            <th>Заказчик</th>
+                                            <th>Прогресс</th>
+                                            <th>Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for project in accessible_projects %}
+                                        <tr>
+                                            <td>{{ project.name_prj }}</td>
+                                            <td>{{ project.date_start|date:"d.m.Y" }}</td>
+                                            <td>{{ project.date_finish|date:"d.m.Y" }}</td>
+                                            <td>{{ project.contact_customer.name_firm|default:"-" }}</td>
+                                            <td>
+                                                {% if project.progress %}
+                                                    <span class="badge bg-{% if project.progress.name_progress == 'Завершен' %}success{% else %}warning{% endif %}">
+                                                        {{ project.progress.name_progress }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">Не указан</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if user_permissions.can_view_projects %}
+                                                    <a href="{% url 'project_edit' project.id %}" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-eye"></i> Просмотр
+                                                    </a>
+                                                {% endif %}
+                                                {% if user_permissions.can_edit_projects %}
+                                                    <a href="{% url 'project_edit' project.id %}" class="btn btn-sm btn-warning">
+                                                        <i class="fas fa-edit"></i> Редактировать
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle"></i>
+                        У вас нет доступа к проектам или проекты не найдены.
+                    </div>
+                {% endif %}
+                
+            {% else %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Профиль пользователя не найден. Обратитесь к администратору для настройки прав доступа.
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'index' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+                
+                {% if user_permissions.can_manage_users %}
+                    <a href="{% url 'user_management' %}" class="btn btn-primary">
+                        <i class="fas fa-users-cog"></i> Управление пользователями
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Дополнительный JavaScript для интерактивности
+    $(document).ready(function() {
+        // Анимация появления элементов
+        $('.card').hide().fadeIn(500);
+        
+        // Подсветка активных прав
+        $('.fas.fa-check').parent().addClass('text-success fw-bold');
+        $('.fas.fa-times').parent().addClass('text-muted');
+    });
+</script>
+{% endblock %}
+
+
+

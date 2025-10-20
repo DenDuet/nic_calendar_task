@@ -233,3 +233,42 @@
 
 
 {% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calendar.js' %}"></script>
+<script>
+// Дополнительная инициализация для конкретной страницы
+$(document).ready(function() {
+  console.log('Календарь задач загружен');
+  
+  // Добавляем подсказки
+  $('[title]').tooltip();
+  
+  // Клавиатурные сокращения
+  $(document).keydown(function(e) {
+    // Ctrl+N - новая задача
+    if (e.ctrlKey && e.keyCode === 78) {
+      e.preventDefault();
+      taskCalendar.showQuickTaskModal(1, 1);
+    }
+    
+    // Ctrl+S - сохранить (если модальное окно открыто)
+    if (e.ctrlKey && e.keyCode === 83 && $('#taskModal').hasClass('show')) {
+      e.preventDefault();
+      $('#saveTask').click();
+    }
+    
+    // Escape - закрыть модальное окно
+    if (e.keyCode === 27 && $('#taskModal').hasClass('show')) {
+      $('#taskModal').modal('hide');
+    }
+  });
+  
+  // Автосохранение каждые 30 секунд
+  setInterval(() => {
+    console.log('Автосохранение задач...');
+    // Задачи уже сохраняются в localStorage автоматически
+  }, 30000);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'prjcalendar/base.html' %}
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Тест API календаря</h1>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Тест загрузки</h3>
+        <button class="btn btn-primary" onclick="testLoad()">Загрузить данные</button>
+        <div id="loadResult" class="mt-3"></div>
+      </div>
+
+      <div class="col-md-6">
+        <h3>Тест сохранения</h3>
+        <button class="btn btn-success" onclick="testSave()">Сохранить данные</button>
+        <div id="saveResult" class="mt-3"></div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <h3>Лог</h3>
+        <div id="log" style="background: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function log(message) {
+      const logDiv = document.getElementById('log')
+      const time = new Date().toLocaleTimeString()
+      logDiv.innerHTML += `[${time}] ${message}<br>`
+      logDiv.scrollTop = logDiv.scrollHeight
+      console.log(message)
+    }
+    
+    function testLoad() {
+      log('Начинаем тест загрузки...')
+      document.getElementById('loadResult').innerHTML = 'Загрузка...'
+    
+      fetch('/api/load-calendar/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+        }
+      })
+        .then((response) => {
+          log(`Ответ сервера: ${response.status} ${response.statusText}`)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+          return response.json()
+        })
+        .then((data) => {
+          log('Данные получены успешно')
+          document.getElementById('loadResult').innerHTML = `
+                      <div class="alert alert-success">
+                        <strong>Успех!</strong><br>
+                        Задач: ${data.tasks ? data.tasks.length : 0}<br>
+                        Проектов: ${data.projects ? data.projects.length : 0}
+                      </div>
+                      <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `
+        })
+        .catch((error) => {
+          log(`Ошибка загрузки: ${error.message}`)
+          document.getElementById('loadResult').innerHTML = `
+                      <div class="alert alert-danger">
+                        <strong>Ошибка!</strong><br>
+                        ${error.message}
+                      </div>
+                    `
+        })
+    }
+    
+    function testSave() {
+      log('Начинаем тест сохранения...')
+      document.getElementById('saveResult').innerHTML = 'Сохранение...'
+    
+      const testData = {
+        tasks: [
+          {
+            id: 'task_test_1',
+            name: 'Тестовая задача',
+            staffId: 1,
+            day: 1,
+            duration: 1,
+            color: '#ff0000'
+          }
+        ]
+      }
+    
+      fetch('/api/save-calendar/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+        },
+        body: JSON.stringify(testData)
+      })
+        .then((response) => {
+          log(`Ответ сервера: ${response.status} ${response.statusText}`)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+          return response.json()
+        })
+        .then((data) => {
+          log('Данные сохранены успешно')
+          document.getElementById('saveResult').innerHTML = `
+                      <div class="alert alert-success">
+                        <strong>Успех!</strong><br>
+                        ${data.message}
+                      </div>
+                      <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `
+        })
+        .catch((error) => {
+          log(`Ошибка сохранения: ${error.message}`)
+          document.getElementById('saveResult').innerHTML = `
+                      <div class="alert alert-danger">
+                        <strong>Ошибка!</strong><br>
+                        ${error.message}
+                      </div>
+                    `
+        })
+    }
+    
+    // Автоматически тестируем при загрузке страницы
+    $(document).ready(function () {
+      log('Страница загружена, начинаем тесты...')
+      setTimeout(testLoad, 1000)
+    })
+  </script>
+{% endblock %}

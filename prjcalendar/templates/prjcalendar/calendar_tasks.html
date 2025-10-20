@@ -1,0 +1,551 @@
+{% extends 'prjcalendar/base.html' %}
+{% load static %}
+{% csrf_token %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Левая панель с проектами -->
+      <div class="col-md-2">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h5><i class="fas fa-project-diagram"></i> Проекты</h5>
+          </div>
+          <div class="card-body">
+            <ul id="projects-list" class="list-unstyled">
+              {% for prj in project %}
+                <li id="project_{{ prj.id }}" class="project-item draggable" data-project-id="{{ prj.id }}" data-project-name="{{ prj.name_prj }}" data-project-color="{{ prj.color }}">
+                  <div class="project-card" style="border-left: 4px solid {{ prj.color }};">
+                    <div class="project-header">
+                      <span class="project-color-indicator" style="background-color: {{ prj.color }};"></span>
+                      {{ prj.name_prj }}
+                    </div>
+                    <div class="project-dates">{{ prj.date_start|date:'d.m' }} - {{ prj.date_finish|date:'d.m' }}</div>
+                    {% if prj.contact_customer %}
+                      <div class="project-customer">{{ prj.contact_customer.name_firm }}</div>
+                    {% endif %}
+                    <div class="project-actions">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="changeProjectColor({{ prj.id }})" title="Изменить цвет"><i class="fas fa-palette"></i></button>
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Корзина -->
+        <div class="card mt-3">
+          <div class="card-header bg-danger text-white">
+            <h6><i class="fas fa-trash"></i> Корзина</h6>
+          </div>
+          <div class="card-body">
+            <div id="trash" class="trash-zone droppable">
+              <i class="fas fa-trash-alt fa-2x"></i>
+              <p>Перетащите сюда для удаления</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Инструкция -->
+        <div class="card mt-3">
+          <div class="card-header bg-info text-white">
+            <h6><i class="fas fa-info-circle"></i> Как использовать</h6>
+          </div>
+          <div class="card-body">
+            <small>
+              • Перетащите проект в ячейку календаря<br />
+              • Дважды кликните по ячейке для быстрого добавления<br />
+              • Перетащите задачу между ячейками<br />
+              • Растягивайте задачи за края<br />
+              • Используйте Ctrl+N для новой задачи
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Основной календарь -->
+      <div class="col-md-10">
+        <div class="card calendar-container">
+          <div class="card-header bg-success text-white">
+            <h5><i class="fas fa-calendar-alt"></i> Календарь задач</h5>
+          </div>
+          <div class="card-body">
+            <!-- Отладочная информация -->
+            <div class="alert alert-info mb-3">
+              <strong>Отладочная информация:</strong><br />
+              Проектов: {{ project|length }}<br />
+              Сотрудников: {{ staff|length }}<br />
+              Дней: {{ days|length }}<br />
+              {% if staff %}
+                <strong>Сотрудники:</strong>
+                {% for s in staff %}
+                  {{ s.name_family }} {{ s.name_first }} (ID: {{ s.id }})<br />
+                {% endfor %}
+              {% else %}
+                <strong style="color: red;">СОТРУДНИКИ НЕ НАЙДЕНЫ!</strong>
+              {% endif %}
+            </div>
+
+            <!-- Панель управления -->
+            <div class="calendar-controls mb-3">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary btn-sm" onclick="taskCalendar.showQuickTaskModal(1, 1)"><i class="fas fa-plus"></i> Добавить задачу</button>
+                <button type="button" class="btn btn-info btn-sm" onclick="showStatistics()"><i class="fas fa-chart-bar"></i> Статистика</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="taskCalendar.exportTasks()"><i class="fas fa-download"></i> Экспорт</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="$('#importFile').click()"><i class="fas fa-upload"></i> Импорт</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="clearAllTasks()"><i class="fas fa-trash"></i> Очистить все</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="taskCalendar.checkElements()"><i class="fas fa-search"></i> Проверить элементы</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="taskCalendar.reinitializeDragDrop()"><i class="fas fa-redo"></i> Переинициализировать</button>
+              </div>
+              <div class="btn-group mt-2" role="group">
+                <button type="button" class="btn btn-primary btn-sm" onclick="loadCalendarFromDatabase()"><i class="fas fa-database"></i> Загрузить из БД</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="saveCalendarToDatabase()"><i class="fas fa-save"></i> Сохранить в БД</button>
+              </div>
+            </div>
+            <input type="file" id="importFile" style="display: none;" accept=".json" onchange="handleImport(event)" />
+
+            <div class="table-responsive">
+              <table class="table table-bordered calendar-table">
+                <thead>
+                  <tr>
+                    <th class="staff-header">
+                      <i class="fas fa-users"></i> Сотрудник
+                    </th>
+                    {% for day in days %}
+                      <th class="day-header">
+                        <div class="day-info">
+                          <span class="day-number">{{ day }}</span>
+                          <span class="month">мая</span>
+                        </div>
+                      </th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for st in staff %}
+                    <tr>
+                      <td class="staff-cell">
+                        <div class="staff-info">
+                          <strong>{{ st.name_family }} {{ st.name_first }}</strong>
+                          {% if st.roleID %}
+                            <br /><small class="text-muted">{{ st.roleID.name_staffrole }}</small>
+                          {% endif %}
+                          {% if st.phone %}
+                            <br /><small><i class="fas fa-phone"></i> {{ st.phone }}</small>
+                          {% endif %}
+                        </div>
+                      </td>
+                      {% for day in days %}
+                        <td class="calendar-cell droppable" data-staff-id="{{ st.id }}" data-day="{{ day }}" title="Дважды кликните для добавления задачи">
+                          <div class="cell-content">
+                            <ul id="cell_{{ st.id }}_{{ day }}" class="task-list sortable">
+                              <!-- Здесь будут отображаться задачи -->
+                            </ul>
+                          </div>
+                        </td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для добавления задачи -->
+  <div class="modal fade" id="taskModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-tasks"></i> Добавить задачу</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="taskForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="taskName" class="form-label">Название задачи</label>
+              <input type="text" class="form-control" id="taskName" required placeholder="Введите название задачи" />
+            </div>
+            <div class="mb-3">
+              <label for="taskDuration" class="form-label">Длительность (дней)</label>
+              <input type="number" class="form-control" id="taskDuration" min="1" max="31" value="1" />
+            </div>
+            <div class="mb-3">
+              <label for="taskColor" class="form-label">Цвет задачи</label>
+              <input type="color" class="form-control form-control-color" id="taskColor" value="#007bff" />
+            </div>
+            <div class="mb-3">
+              <label for="taskDescription" class="form-label">Описание (необязательно)</label>
+              <textarea class="form-control" id="taskDescription" rows="2" placeholder="Дополнительная информация о задаче"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Отмена</button>
+          <button type="button" class="btn btn-primary" id="saveTask"><i class="fas fa-save"></i> Сохранить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно для изменения цвета проекта -->
+  <div class="modal fade" id="projectColorModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-palette"></i> Изменить цвет проекта</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="projectColorForm">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="projectColor" class="form-label">Выберите цвет</label>
+              <input type="color" class="form-control form-control-color" id="projectColor" value="#007bff" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Предустановленные цвета:</label>
+              <div class="color-palette">
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #007bff;" data-color="#007bff" title="Синий"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #28a745;" data-color="#28a745" title="Зеленый"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #dc3545;" data-color="#dc3545" title="Красный"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #ffc107;" data-color="#ffc107" title="Желтый"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #6f42c1;" data-color="#6f42c1" title="Фиолетовый"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #fd7e14;" data-color="#fd7e14" title="Оранжевый"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #20c997;" data-color="#20c997" title="Бирюзовый"></button>
+                <button type="button" class="btn btn-sm color-btn" style="background-color: #6c757d;" data-color="#6c757d" title="Серый"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times"></i> Отмена</button>
+          <button type="button" class="btn btn-primary" id="saveProjectColor"><i class="fas fa-save"></i> Сохранить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/calendar.js' %}"></script>
+  <script>
+    // Дополнительная инициализация для конкретной страницы
+    $(document).ready(function () {
+      console.log('Календарь задач загружен')
+    
+      // Добавляем подсказки
+      $('[title]').tooltip()
+    
+      // Клавиатурные сокращения
+      $(document).keydown(function (e) {
+        // Ctrl+N - новая задача
+        if (e.ctrlKey && e.keyCode === 78) {
+          e.preventDefault()
+          taskCalendar.showQuickTaskModal(1, 1)
+        }
+    
+        // Ctrl+S - сохранить (если модальное окно открыто)
+        if (e.ctrlKey && e.keyCode === 83 && $('#taskModal').hasClass('show')) {
+          e.preventDefault()
+          $('#saveTask').click()
+        }
+    
+        // Escape - закрыть модальное окно
+        if (e.keyCode === 27 && $('#taskModal').hasClass('show')) {
+          $('#taskModal').modal('hide')
+        }
+      })
+    
+      // Автосохранение каждые 30 секунд
+      setInterval(() => {
+        console.log('Автосохранение задач...')
+        // Задачи уже сохраняются в localStorage автоматически
+      }, 30000)
+    
+      // Показываем уведомление о загрузке
+      setTimeout(() => {
+        if (typeof taskCalendar !== 'undefined') {
+          taskCalendar.showAlert('Календарь готов к работе! Перетащите проект в ячейку или дважды кликните по ячейке.', 'success')
+        }
+      }, 1000)
+    })
+    
+    // Глобальные переменные для работы с цветами проектов
+    let currentProjectId = null
+    
+    // Функция для изменения цвета проекта
+    function changeProjectColor(projectId) {
+      currentProjectId = projectId
+      const projectElement = document.querySelector(`#project_${projectId}`)
+      const currentColor = projectElement.dataset.projectColor || '#007bff'
+    
+      document.getElementById('projectColor').value = currentColor
+      $('#projectColorModal').modal('show')
+    }
+    
+    // Обработчик сохранения цвета проекта
+    $('#saveProjectColor').click(function () {
+      if (!currentProjectId) return
+    
+      const newColor = document.getElementById('projectColor').value
+    
+      // Отправляем запрос на сервер
+      fetch('/api/update-project-color/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          projectId: currentProjectId,
+          color: newColor
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Обновляем цвет в интерфейсе
+            const projectElement = document.querySelector(`#project_${currentProjectId}`)
+            projectElement.dataset.projectColor = newColor
+            projectElement.querySelector('.project-card').style.borderLeftColor = newColor
+            projectElement.querySelector('.project-color-indicator').style.backgroundColor = newColor
+    
+            // Обновляем цвет всех связанных задач
+            const tasks = document.querySelectorAll(`[data-project-id="${currentProjectId}"]`)
+            tasks.forEach((task) => {
+              task.style.backgroundColor = newColor
+            })
+    
+            $('#projectColorModal').modal('hide')
+            taskCalendar.showAlert(data.message, 'success')
+          } else {
+            taskCalendar.showAlert('Ошибка: ' + data.error, 'error')
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка:', error)
+          taskCalendar.showAlert('Ошибка при сохранении цвета', 'error')
+        })
+    })
+    
+    // Обработчики для предустановленных цветов
+    $('.color-btn').click(function () {
+      const color = $(this).data('color')
+      $('#projectColor').val(color)
+    })
+    
+    // Функция для загрузки данных календаря из БД
+    function loadCalendarFromDatabase() {
+      console.log('Загружаем данные календаря из БД...')
+      fetch('/api/load-calendar/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+        }
+      })
+        .then((response) => {
+          console.log('Ответ сервера:', response.status)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log('Данные получены:', data)
+          if (data.success) {
+            // Очищаем текущие данные
+            try {
+              if (typeof taskCalendar !== 'undefined' && taskCalendar.clearAllTasks) {
+                taskCalendar.clearAllTasks()
+              } else {
+                // Очищаем localStorage
+                localStorage.removeItem('calendarTasks')
+              }
+            } catch (e) {
+              console.warn('Ошибка очистки данных:', e)
+            }
+    
+            // Загружаем проекты с цветами
+            if (data.projects) {
+              data.projects.forEach((project) => {
+                const projectElement = document.querySelector(`#project_${project.id}`)
+                if (projectElement) {
+                  projectElement.dataset.projectColor = project.color
+                  projectElement.querySelector('.project-card').style.borderLeftColor = project.color
+                  projectElement.querySelector('.project-color-indicator').style.backgroundColor = project.color
+                }
+              })
+            }
+    
+            // Загружаем задачи
+            if (data.tasks && data.tasks.length > 0) {
+              console.log('Загружаем задачи:', data.tasks)
+              if (typeof taskCalendar !== 'undefined' && taskCalendar.addTaskToCalendar) {
+                data.tasks.forEach((task) => {
+                  console.log('Добавляем задачу:', task)
+                  taskCalendar.addTaskToCalendar(task)
+                })
+    
+                // Исправляем позиционирование всех задач после загрузки
+                setTimeout(() => {
+                  if (typeof taskCalendar !== 'undefined' && taskCalendar.fixAllTaskPositions) {
+                    taskCalendar.fixAllTaskPositions()
+                  }
+                }, 100)
+              } else {
+                console.warn('taskCalendar.addTaskToCalendar не найден, сохраняем в localStorage')
+                localStorage.setItem('calendarTasks', JSON.stringify(data.tasks))
+              }
+            } else {
+              console.log('Нет задач для загрузки')
+              // Создаем тестовую задачу для проверки
+              const testTask = {
+                id: 'task_test_1',
+                name: 'Тестовая задача',
+                staffId: 1,
+                day: 1,
+                duration: 1,
+                color: '#ff0000',
+                projectId: 3
+              }
+              console.log('Создаем тестовую задачу:', testTask)
+    
+              if (typeof taskCalendar !== 'undefined' && taskCalendar.addTaskToCalendar) {
+                taskCalendar.addTaskToCalendar(testTask)
+              } else {
+                localStorage.setItem('calendarTasks', JSON.stringify([testTask]))
+              }
+            }
+    
+            const message = `Загружено ${data.tasks ? data.tasks.length : 0} задач и ${data.projects ? data.projects.length : 0} проектов`
+            if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+              taskCalendar.showAlert(message, 'success')
+            } else {
+              alert(message)
+            }
+          } else {
+            const errorMsg = 'Ошибка загрузки: ' + (data.error || 'Неизвестная ошибка')
+            if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+              taskCalendar.showAlert(errorMsg, 'error')
+            } else {
+              alert(errorMsg)
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка при загрузке данных:', error)
+          const errorMsg = 'Ошибка при загрузке данных: ' + error.message
+          if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+            taskCalendar.showAlert(errorMsg, 'error')
+          } else {
+            alert(errorMsg)
+          }
+        })
+    }
+    
+    // Функция для сохранения данных календаря в БД
+    function saveCalendarToDatabase() {
+      console.log('Сохраняем данные календаря в БД...')
+    
+      let tasks = []
+      // Пытаемся получить задачи из localStorage или из taskCalendar
+      try {
+        if (typeof taskCalendar !== 'undefined' && taskCalendar.getAllTasks) {
+          tasks = taskCalendar.getAllTasks()
+        } else {
+          // Получаем задачи из localStorage
+          const savedTasks = localStorage.getItem('calendarTasks')
+          if (savedTasks) {
+            tasks = JSON.parse(savedTasks)
+          }
+        }
+      } catch (e) {
+        console.warn('Ошибка получения задач:', e)
+      }
+    
+      console.log('Задачи для сохранения:', tasks)
+    
+      fetch('/api/save-calendar/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          tasks: tasks
+        })
+      })
+        .then((response) => {
+          console.log('Ответ сервера при сохранении:', response.status)
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`)
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log('Результат сохранения:', data)
+          if (data.success) {
+            const message = data.message || 'Данные сохранены успешно'
+            if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+              taskCalendar.showAlert(message, 'success')
+            } else {
+              alert(message)
+            }
+            if (data.errors && data.errors.length > 0) {
+              console.warn('Ошибки при сохранении:', data.errors)
+            }
+          } else {
+            const errorMsg = 'Ошибка сохранения: ' + (data.error || 'Неизвестная ошибка')
+            if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+              taskCalendar.showAlert(errorMsg, 'error')
+            } else {
+              alert(errorMsg)
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Ошибка при сохранении:', error)
+          const errorMsg = 'Ошибка при сохранении данных: ' + error.message
+          if (typeof taskCalendar !== 'undefined' && taskCalendar.showAlert) {
+            taskCalendar.showAlert(errorMsg, 'error')
+          } else {
+            alert(errorMsg)
+          }
+        })
+    }
+    
+    // Добавляем функции в глобальный объект taskCalendar
+    if (typeof taskCalendar !== 'undefined') {
+      taskCalendar.loadCalendarFromDatabase = loadCalendarFromDatabase
+      taskCalendar.saveCalendarToDatabase = saveCalendarToDatabase
+    }
+    
+    // Делаем функции глобальными для прямого вызова
+    window.loadCalendarFromDatabase = loadCalendarFromDatabase
+    window.saveCalendarToDatabase = saveCalendarToDatabase
+    
+    console.log('Функции API загружены:', {
+      loadCalendarFromDatabase: typeof loadCalendarFromDatabase,
+      saveCalendarToDatabase: typeof saveCalendarToDatabase
+    })
+    
+    // Проверяем объект taskCalendar
+    console.log('taskCalendar объект:', {
+      exists: typeof taskCalendar !== 'undefined',
+      addTaskToCalendar: typeof taskCalendar !== 'undefined' ? typeof taskCalendar.addTaskToCalendar : 'undefined',
+      clearAllTasks: typeof taskCalendar !== 'undefined' ? typeof taskCalendar.clearAllTasks : 'undefined',
+      getAllTasks: typeof taskCalendar !== 'undefined' ? typeof taskCalendar.getAllTasks : 'undefined'
+    })
+  </script>
+{% endblock %}
