@@ -16100,3 +16100,11 @@ INFO 2025-10-20 21:18:30,709 basehttp 9972 19040 "GET /static/css/calendar.css H
 INFO 2025-10-20 21:18:30,717 basehttp 9972 19040 "GET /static/js/calendar.js HTTP/1.1" 304 0
 WARNING 2025-10-20 21:18:31,422 log 9972 19040 Not Found: /api/tasks/
 WARNING 2025-10-20 21:18:31,422 basehttp 9972 19040 "GET /api/tasks/ HTTP/1.1" 404 7382
+INFO 2025-10-20 21:59:17,885 autoreload 9972 8640 H:\YD\Python\Nic_projects\prTimeLine\workcalendar\prjcalendar\views.py changed, reloading.
+INFO 2025-10-20 21:59:17,944 autoreload 1788 10056 H:\YD\Python\Nic_projects\prTimeLine\workcalendar\prjcalendar\views.py changed, reloading.
+INFO 2025-10-20 21:59:18,202 autoreload 15372 16900 H:\YD\Python\Nic_projects\prTimeLine\workcalendar\prjcalendar\views.py changed, reloading.
+INFO 2025-10-20 21:59:18,213 autoreload 17944 17084 H:\YD\Python\Nic_projects\prTimeLine\workcalendar\prjcalendar\views.py changed, reloading.
+INFO 2025-10-20 21:59:19,185 autoreload 15816 11656 Watching for file changes with StatReloader
+INFO 2025-10-20 21:59:19,189 autoreload 10480 1848 Watching for file changes with StatReloader
+INFO 2025-10-20 21:59:19,277 autoreload 5464 18816 Watching for file changes with StatReloader
+INFO 2025-10-20 21:59:19,285 autoreload 18064 3356 Watching for file changes with StatReloader

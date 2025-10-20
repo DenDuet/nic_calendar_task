@@ -333,7 +333,8 @@ def delete_task(request):
 @login_required
 def save_calendar_data(request):
     """API для сохранения всех данных календаря в БД"""
-    print(f"DEBUG: Запрос к save_calendar_data от пользователя {request.user.username}")
+    print(
+        f"DEBUG: Запрос к save_calendar_data от пользователя {request.user.username}")
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -381,7 +382,8 @@ def save_calendar_data(request):
                     errors.append(error_msg)
                     print(f"DEBUG: {error_msg}")
 
-            print(f"DEBUG: Успешно сохранено {saved_count} задач, ошибок: {len(errors)}")
+            print(
+                f"DEBUG: Успешно сохранено {saved_count} задач, ошибок: {len(errors)}")
             return JsonResponse({
                 'success': True,
                 'saved_count': saved_count,
@@ -403,7 +405,8 @@ def save_calendar_data(request):
 @login_required
 def load_calendar_data(request):
     """API для загрузки всех данных календаря из БД"""
-    print(f"DEBUG: Запрос к load_calendar_data от пользователя {request.user.username}")
+    print(
+        f"DEBUG: Запрос к load_calendar_data от пользователя {request.user.username}")
     try:
         # Загружаем задачи
         tasks = Task.objects.filter(
@@ -435,7 +438,8 @@ def load_calendar_data(request):
                 'customer': project.contact_customer.name_firm if project.contact_customer else None
             })
 
-        print(f"DEBUG: Найдено {len(tasks_data)} задач и {len(projects_data)} проектов")
+        print(
+            f"DEBUG: Найдено {len(tasks_data)} задач и {len(projects_data)} проектов")
         return JsonResponse({
             'success': True,
             'tasks': tasks_data,
