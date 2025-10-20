@@ -1,0 +1,14 @@
+# Ультра минимальные зависимости для работы Django
+Django==3.2.25
+asgiref==3.4.1
+sqlparse==0.4.4
+tzdata==2023.3
+
+# PyMySQL для MySQL
+PyMySQL==1.0.2
+
+# Python dotenv
+python-dotenv==1.0.0
+
+# Gunicorn для продакшена
+gunicorn==21.2.0
