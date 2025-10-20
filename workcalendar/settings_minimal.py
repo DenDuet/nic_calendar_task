@@ -1,0 +1,73 @@
+import os
+from .settings import *
+
+# Production settings for minimal installation
+DEBUG = False
+ALLOWED_HOSTS = ['dhcwrk.online', 'www.dhcwrk.online', '127.0.0.1', 'localhost']
+
+# Убираем проблемные пакеты из INSTALLED_APPS
+INSTALLED_APPS = [
+    'users.apps.UsersConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'prjcalendar',
+]
+
+# Убираем проблемные настройки
+CRISPY_TEMPLATE_PACK = None
+
+# Database - MySQL with PyMySQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'u2976163_dhcwrk',  # Замените на ваше имя базы данных
+        'USER': 'u2976163_dhcwrk',  # Замените на ваше имя пользователя
+        'PASSWORD': 'your_password_here',  # Замените на ваш пароль
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    }
+}
+
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Security settings
+SECURE_SSL_REDIRECT = False  # Отключено для тестирования
+SECURE_HSTS_SECONDS = 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
