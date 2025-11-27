@@ -27,26 +27,77 @@ from django.shortcuts import get_object_or_404
 @login_required
 def index(request):
     '''Выводим журнал категорий'''
-    if request.user.is_authenticated:
-        print(f'Юзер авторизован {request.user.username}')
+    try:
+        if request.user.is_authenticated:
+            print(f'Юзер авторизован {request.user.username}')
 
-        # Получаем права пользователя для отображения в интерфейсе
-        user_permissions = get_user_permissions(request.user)
+            # Проверяем наличие UserProfile, создаем если нет
+            from prjcalendar.models import UserProfile, UserGroup
+            try:
+                UserProfile.objects.get(user=request.user)
+            except UserProfile.DoesNotExist:
+                # Создаем профиль пользователя с правами по умолчанию
+                try:
+                    from prjcalendar.permissions import assign_user_to_group, create_default_groups
+                    # Убеждаемся, что группы существуют
+                    create_default_groups()
+                    assign_user_to_group(request.user, "Наблюдатели")
+                    print(
+                        f'Создан профиль для пользователя {request.user.username}')
+                except Exception as e:
+                    # Если не удалось создать через группу, создаем базовый профиль
+                    print(f'Ошибка при создании профиля через группу: {e}')
+                    default_group = UserGroup.objects.first()
+                    if not default_group:
+                        from prjcalendar.permissions import create_default_groups
+                        create_default_groups()
+                        default_group = UserGroup.objects.first()
 
-        # Получаем доступные проекты
-        accessible_projects = get_accessible_projects(request.user)
+                    UserProfile.objects.create(
+                        user=request.user,
+                        user_group=default_group,
+                        can_view_projects=True,
+                        can_view_staff=True,
+                        can_view_customers=True,
+                        can_view_reports=True
+                    )
+                    print(
+                        f'Создан базовый профиль для пользователя {request.user.username}')
 
-        context = {
-            "users": user_views,
-            "title": "Пользователи",
-            "user_permissions": user_permissions,
-            "accessible_projects": accessible_projects
-        }
-    else:
-        print(f'Юзер неавторизован {request.user.username}')
-        return HttpResponseRedirect("/login/")
+            # Получаем права пользователя для отображения в интерфейсе
+            user_permissions = get_user_permissions(request.user)
 
-    return render(request, "prjcalendar/users.html", context=context)
+            # Получаем доступные проекты
+            accessible_projects = get_accessible_projects(request.user)
+
+            context = {
+                "users": user_views,
+                "title": "Пользователи",
+                "user_permissions": user_permissions,
+                "accessible_projects": accessible_projects
+            }
+        else:
+            print(f'Юзер неавторизован {request.user.username}')
+            return HttpResponseRedirect("/login/")
+
+        return render(request, "prjcalendar/users.html", context=context)
+    except Exception as e:
+        # Логируем ошибку для отладки
+        import logging
+        import traceback
+        logger = logging.getLogger(__name__)
+        error_msg = str(e)
+        traceback_str = traceback.format_exc()
+        logger.error("Ошибка в index view: %s\n%s", error_msg, traceback_str)
+
+        # Возвращаем простую страницу с ошибкой или редирект
+        messages.error(
+            request, 'Произошла ошибка при загрузке страницы. Пожалуйста, обратитесь к администратору.')
+        return render(request, "prjcalendar/users.html", context={
+            "title": "Ошибка",
+            "user_permissions": None,
+            "accessible_projects": []
+        })
 
 
 @login_required
